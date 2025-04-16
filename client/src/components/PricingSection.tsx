@@ -127,7 +127,7 @@ export function PricingSection() {
         key: orderData.keyId,
         amount: orderData.amount,
         currency: orderData.currency,
-        name: "Search Madarth",
+        name: "Search Madarth®",
         description: "SEO Audit Services",
         order_id: orderData.orderId,
         handler: async function (response: any) {
