@@ -39,32 +39,20 @@ export function Footer() {
               <li><a href="#pricing" className="text-gray-400 hover:text-[#B2F74D]">Pricing</a></li>
             </ul>
           </div>
-          
-          <div>
-            <h4 className="font-semibold mb-4">Resources</h4>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-gray-400 hover:text-[#B2F74D]">SEO Guide</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-[#B2F74D]">Blog</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-[#B2F74D]">Case Studies</a></li>
-              <li><a href="#faq" className="text-gray-400 hover:text-[#B2F74D]">FAQ</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-[#B2F74D]">Support</a></li>
-            </ul>
-          </div>
-          
           <div>
             <h4 className="font-semibold mb-4">Contact Us</h4>
             <ul className="space-y-2">
               <li className="flex items-start space-x-3">
                 <Icon name="map-pin" className="mt-1 text-[#B2F74D]" />
-                <span className="text-gray-400">123 SEO Street, Digital City, 10001</span>
+                <span className="text-gray-400">4, Alamelu Manga Puram Rd, Saradapuram, Mylapore, Chennai, Tamil Nadu 600004</span>
               </li>
               <li className="flex items-start space-x-3">
                 <Icon name="mail" className="mt-1 text-[#B2F74D]" />
-                <span className="text-gray-400">info@growthinsight.com</span>
+                <span className="text-gray-400">manoj@madarth.com</span>
               </li>
               <li className="flex items-start space-x-3">
                 <Icon name="phone" className="mt-1 text-[#B2F74D]" />
-                <span className="text-gray-400">+1 (555) 123-4567</span>
+                <span className="text-gray-400">+91 86677 67447</span>
               </li>
             </ul>
           </div>
