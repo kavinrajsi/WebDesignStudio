@@ -10,12 +10,27 @@ export function Navbar() {
   const isHomePage = location === "/";
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    const nextState = !isMenuOpen;
+    setIsMenuOpen(nextState);
+    document.body.style.overflow = nextState ? 'hidden' : 'auto';
   };
 
   const closeMenu = () => {
     setIsMenuOpen(false);
+    document.body.style.overflow = 'auto';
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const menu = document.querySelector('.mobile-menu');
+      if (isMenuOpen && menu && !menu.contains(event.target as Node)) {
+        closeMenu();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isMenuOpen]);
 
   // Function to handle navigation with hash for home page
   const handleNavigation = (event: React.MouseEvent<HTMLAnchorElement>, target: string) => {
@@ -31,7 +46,7 @@ export function Navbar() {
   };
 
   return (
-    <nav className="bg-[#0F3529] text-white py-4">
+    <nav className="bg-[#0F3529] text-white h-[64px] flex items-center fixed top-0 left-0 right-0 z-50">
       <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
         <div className="flex items-center">
           <Link href="/" className="font-bold flex items-center">
@@ -69,9 +84,10 @@ export function Navbar() {
           >
             Process
           </a>
-          <Button className="bg-[#B2F74D] text-[#0F3529] font-semibold hover:bg-[#0F3529] hover:text-[#B2F74D] hover:border hover:border-[#B2F74D] transition-all">
+          <a href={isHomePage ? "#pricing" : "/#pricing"}  className="bg-[#B2F74D] text-[#0F3529] font-semibold border-[1px] border-[--color-border] hover:bg-[#0F3529] hover:text-[#B2F74D] hover:border hover:border-[#B2F74D] transition-all px-4 py-2 rounded-md"
+           onClick={(e) => isHomePage && handleNavigation(e, "#pricing")}>
             Get Started
-          </Button>
+          </a>
         </div>
         
         {/* Mobile Menu Button */}
@@ -89,7 +105,7 @@ export function Navbar() {
       </div>
       
       {/* Mobile Navigation */}
-      <div className={`md:hidden bg-[#1A5A46] absolute w-full z-50 px-4 py-2 shadow-lg transition-all duration-300 ${isMenuOpen ? 'block' : 'hidden'}`}>
+      <div className={`mobile-menu md:hidden bg-[#1A5A46] fixed top-[64px] left-0 w-full z-50 px-4 py-2 shadow-lg transition-all duration-300 ${isMenuOpen ? 'block' : 'hidden'}`}>
         <div className="flex flex-col space-y-3 py-3">
           <a 
             href={isHomePage ? "#features" : "/#features"}
@@ -120,7 +136,7 @@ export function Navbar() {
             Process
           </a>
           <Button 
-            className="bg-[#B2F74D] text-[#0F3529] font-semibold hover:bg-[#0F3529] hover:text-[#B2F74D] hover:border hover:border-[#B2F74D] transition-all w-full"
+            className="bg-[#B2F74D] text-[#0F3529] font-semibold border-[1px] border-[--color-border] hover:bg-[#0F3529] hover:text-[#B2F74D] hover:border hover:border-[#B2F74D] transition-all w-full"
             onClick={closeMenu}
           >
             Get Started
