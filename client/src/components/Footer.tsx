@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import { Icon } from "@/components/ui/icon";
+import logoSvg from "../assets/logo.svg";
 
 export function Footer() {
   return (
@@ -7,9 +8,9 @@ export function Footer() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="font-bold text-xl mb-4 flex items-center gap-2">
-              <span className="text-[#B2F74D]">Growth</span><span>INSIGHT</span>
-            </h3>
+            <div className="mb-4">
+              <img src={logoSvg} alt="Growth Insight Logo" className="h-6" />
+            </div>
             <p className="text-gray-400 mb-4">
               Helping businesses improve their online presence through data-driven SEO strategies.
             </p>

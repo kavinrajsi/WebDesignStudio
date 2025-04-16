@@ -94,7 +94,12 @@ export function PricingSection() {
 
     try {
       // Create Razorpay order
-      const orderData = await apiRequest("/api/create-order", {
+      const orderData = await apiRequest<{
+        orderId: string;
+        amount: number;
+        currency: string;
+        keyId: string;
+      }>("/api/create-order", {
         method: "POST",
         body: JSON.stringify({
           amount: amount,
@@ -121,7 +126,11 @@ export function PricingSection() {
         handler: async function (response: any) {
           try {
             // Verify payment
-            const verificationData = await apiRequest("/api/verify-payment", {
+            const verificationData = await apiRequest<{
+              success: boolean;
+              message: string;
+              paymentId: string;
+            }>("/api/verify-payment", {
               method: "POST",
               body: JSON.stringify({
                 razorpay_order_id: response.razorpay_order_id,
