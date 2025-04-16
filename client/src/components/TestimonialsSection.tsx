@@ -7,37 +7,37 @@ const testimonials = [
     name: "Sarah Johnson",
     profession: "Marketing Director",
     testimonial: "Exceptional service, always reliable and supportive, highly recommend for all SEO needs.",
-    avatar: "/avatar1.png"
+    initials: "SJ"
   },
   {
     name: "Michael Chen",
     profession: "E-commerce Founder",
     testimonial: "Professional and efficient, consistently putting clients first, an outstanding SEO experience.",
-    avatar: "/avatar2.png"
+    initials: "MC"
   },
   {
     name: "Jessica Williams",
     profession: "Startup CEO",
-    testimonial: "Outstanding customer service, seamless and hassle-free banking, highly trustworthy institution.",
-    avatar: "/avatar3.png"
+    testimonial: "Outstanding customer service, seamless and hassle-free handling, highly trustworthy institution.",
+    initials: "JW"
   },
   {
     name: "David Rodriguez",
     profession: "Online Store Owner",
     testimonial: "Personalized service, highly professional and trustworthy team, makes SEO optimization a pleasure.",
-    avatar: "/avatar4.png"
+    initials: "DR"
   },
   {
     name: "Emily Taylor",
     profession: "Content Creator",
     testimonial: "Top-notch service, responsive and knowledgeable staff, always there when needed.",
-    avatar: "/avatar5.png"
+    initials: "ET"
   },
   {
     name: "Robert Kim",
     profession: "Digital Agency CEO",
     testimonial: "Friendly and personalized service, delivered exceptional SEO results for our business.",
-    avatar: "/avatar6.png"
+    initials: "RK"
   }
 ];
 
@@ -93,9 +93,8 @@ export function TestimonialsSection() {
                   <p className="text-lg mb-6 italic">"{testimonial.testimonial}"</p>
                   <div className="flex items-center">
                     <Avatar className="mr-4">
-                      <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
                       <AvatarFallback className="bg-[#B2F74D] text-[#0F3529]">
-                        {testimonial.name.split(' ').map(n => n[0]).join('')}
+                        {testimonial.initials}
                       </AvatarFallback>
                     </Avatar>
                     <div>
