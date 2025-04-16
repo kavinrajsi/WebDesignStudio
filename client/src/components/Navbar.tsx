@@ -18,10 +18,8 @@ export function Navbar() {
     <nav className="bg-[#0F3529] text-white py-4">
       <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
         <div className="flex items-center">
-          <Link href="/">
-            <a className="font-bold text-xl flex items-center gap-2">
-              <span className="text-[#B2F74D]">Growth</span><span>INSIGHT</span>
-            </a>
+          <Link href="/" className="font-bold text-xl flex items-center gap-2">
+            <span className="text-[#B2F74D]">Growth</span><span>INSIGHT</span>
           </Link>
         </div>
         

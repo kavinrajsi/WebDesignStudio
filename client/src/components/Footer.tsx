@@ -32,11 +32,11 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              <li><Link href="/"><a className="text-gray-400 hover:text-[#B2F74D]">Home</a></Link></li>
+              <li><Link href="/" className="text-gray-400 hover:text-[#B2F74D]">Home</Link></li>
               <li><a href="#features" className="text-gray-400 hover:text-[#B2F74D]">Features</a></li>
               <li><a href="#industries" className="text-gray-400 hover:text-[#B2F74D]">Industries</a></li>
               <li><a href="#process" className="text-gray-400 hover:text-[#B2F74D]">How It Works</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-[#B2F74D]">Pricing</a></li>
+              <li><a href="#pricing" className="text-gray-400 hover:text-[#B2F74D]">Pricing</a></li>
             </ul>
           </div>
           
@@ -46,7 +46,7 @@ export function Footer() {
               <li><a href="#" className="text-gray-400 hover:text-[#B2F74D]">SEO Guide</a></li>
               <li><a href="#" className="text-gray-400 hover:text-[#B2F74D]">Blog</a></li>
               <li><a href="#" className="text-gray-400 hover:text-[#B2F74D]">Case Studies</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-[#B2F74D]">FAQ</a></li>
+              <li><a href="#faq" className="text-gray-400 hover:text-[#B2F74D]">FAQ</a></li>
               <li><a href="#" className="text-gray-400 hover:text-[#B2F74D]">Support</a></li>
             </ul>
           </div>
