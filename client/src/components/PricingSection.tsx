@@ -127,7 +127,7 @@ export function PricingSection() {
         key: orderData.keyId,
         amount: orderData.amount,
         currency: orderData.currency,
-        name: "Search Madarth®",
+        name: "Search Madarth",
         description: "SEO Audit Services",
         order_id: orderData.orderId,
         handler: async function (response: any) {
@@ -192,7 +192,7 @@ export function PricingSection() {
   };
 
   return (
-    <section id="pricing" className="py-16 bg-gray-50">
+    <section id="pricing" className="py-16 bg-white">
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold mb-4">
@@ -209,7 +209,7 @@ export function PricingSection() {
           {packages.map((pkg) => (
             <div
               key={pkg.id}
-              className={`bg-white p-6 rounded-lg shadow-md border ${pkg.isPopular ? "border-[#B2F74D]" : "border-gray-200"} transition-all duration-300 hover:-translate-y-1 hover:shadow-xl relative overflow-hidden`}
+              className={`bg-white p-6 rounded-lg shadow-md border ${pkg.isPopular ? "border-[#B2F74D]" : "border-gray-200"} transition-all duration-300 hover:-translate-y-1 hover:shadow-xl relative overflow-hidden flex flex-col h-full justify-between`}
             >
               {pkg.isPopular && (
                 <div className="absolute top-0 right-0">
@@ -229,7 +229,7 @@ export function PricingSection() {
               </div>
               <p className="text-gray-600 mb-6">{pkg.description}</p>
               <Button
-                className={`w-full ${pkg.isPopular ? "bg-[#B2F74D] text-[#0F3529]" : "bg-[#0F3529] text-white"} font-semibold hover:bg-[#0F3529] hover:text-[#B2F74D] hover:border hover:border-[#B2F74D] transition-all`}
+                className={`w-full ${pkg.isPopular ? "bg-[#B2F74D] text-[#0F3529]" : "bg-[#0F3529] text-white"} font-semibold hover:bg-[#0F3529] hover:text-[#B2F74D] hover:border hover:border-[#0F3529] transition-all`}
                 onClick={() => handlePayment(pkg.id, pkg.priceInr)}
                 disabled={isLoading === pkg.id}
               >
@@ -239,27 +239,27 @@ export function PricingSection() {
           ))}
         </div>
 
-        <div className="bg-white p-8 rounded-lg shadow-md border border-gray-200">
-          <h3 className="text-xl font-bold mb-6 text-center">
+        <div className="py-16">
+          <h3 className="text-2xl font-bold mb-6 text-center text-[#0F3529]">
             What You Can Expect When You Partner with Us
           </h3>
-          <p className="text-gray-600 mb-8 text-center max-w-3xl mx-auto">
+          <p className="text-gray-600 mb-12 text-center max-w-3xl mx-auto text-lg">
             We don't just analyze your website—we provide real, actionable
             insights that drive measurable growth. Here's what you get when you
             choose our AI-powered SEO audit service:
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {benefits.map((benefit, index) => (
               <div
                 key={index}
-                className="flex flex-col items-center text-center"
+                className="flex flex-col items-start text-left group"
               >
-                <div className="h-12 w-12 bg-[#F3FAE9] rounded-full flex items-center justify-center mb-4">
-                  <Check className="h-6 w-6 text-[#0F3529]" />
+                <div className="h-16 w-16 bg-[#E8F5E9] rounded-full flex items-center justify-center mb-6">
+                  <Check className="h-8 w-8 text-[#0F3529]" />
                 </div>
-                <h4 className="font-semibold mb-2">{benefit}</h4>
-                <p className="text-sm text-gray-600">
+                <h4 className="font-bold text-xl mb-3 text-[#0F3529]">{benefit}</h4>
+                <p className="text-gray-600 leading-relaxed">
                   {benefitsDescriptions[index]}
                 </p>
               </div>
@@ -267,15 +267,18 @@ export function PricingSection() {
           </div>
 
           <div className="mt-10 text-center">
-            <Button
-              className="bg-[#B2F74D] text-[#0F3529] font-semibold px-8 py-3 h-auto hover:bg-[#0F3529] hover:text-[#B2F74D] hover:border hover:border-[#B2F74D] transition-all"
+            {/* <Button
+              className="bg-[#B2F74D] text-[#0F3529] font-semibold px-8 py-3 h-auto hover:bg-[#0F3529] hover:text-[#B2F74D] hover:border hover:border-[#B2F74D] transition-all bg-[#B2F74D] text-[#0F3529] font-semibold px-6 py-3 h-auto border-[1px] border-[#B2F74D] hover:bg-[#0F3529] hover:text-[#B2F74D] hover:border hover:border-[#0F3529] transition-all transform "
               onClick={() => handlePayment("seo-audit", 870)}
               disabled={isLoading === "seo-audit-bottom"}
             >
               {isLoading === "seo-audit-bottom"
                 ? "Processing..."
                 : "Get Your SEO Audit Now"}
-            </Button>
+            </Button> */}
+            <a href="#pricing" className="bg-[#B2F74D] text-[#0F3529] font-semibold px-6 py-3 h-auto border-[1px] border-[#B2F74D] hover:bg-[#0F3529] hover:text-[#B2F74D] hover:border hover:border-[#0F3529] transition-all transform px-4 py-2 rounded-md">
+            Start Your SEO Audit Now
+          </a>
           </div>
         </div>
       </div>

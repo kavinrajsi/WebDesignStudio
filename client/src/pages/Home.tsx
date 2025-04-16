@@ -1,3 +1,4 @@
+
 import { Navbar } from "@/components/Navbar";
 import { HeroSection } from "@/components/HeroSection";
 import { FeaturesSection } from "@/components/FeaturesSection";
@@ -7,10 +8,11 @@ import { PricingSection } from "@/components/PricingSection";
 import { FAQSection } from "@/components/FAQSection";
 import { ContactSection } from "@/components/ContactSection";
 import { CTASection } from "@/components/CTASection";
-import { TestimonialsSection } from "@/components/TestimonialsSection";
+import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
 import { Footer } from "@/components/Footer";
 
 export default function Home() {
+  useIntersectionObserver();
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
@@ -19,7 +21,6 @@ export default function Home() {
         <FeaturesSection />
         <IndustriesSection />
         <ProcessSection />
-        <TestimonialsSection />
         <PricingSection />
         <FAQSection />
         <ContactSection />

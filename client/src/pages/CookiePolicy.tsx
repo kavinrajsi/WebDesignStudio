@@ -15,7 +15,7 @@ export default function CookiePolicy() {
               
               <h2 className="text-xl font-semibold mt-8 mb-4">1. Introduction</h2>
               <p>
-                This Cookie Policy explains how Growth Insight ("we," "our," or "us") uses cookies and similar technologies to recognize you when you visit our website. It explains what these technologies are and why we use them, as well as your rights to control our use of them.
+                This Cookie Policy explains how Search Madarth® ("we," "our," or "us") uses cookies and similar technologies to recognize you when you visit our website. It explains what these technologies are and why we use them, as well as your rights to control our use of them.
               </p>
               
               <h2 className="text-xl font-semibold mt-8 mb-4">2. What Are Cookies?</h2>
@@ -23,7 +23,7 @@ export default function CookiePolicy() {
                 Cookies are small data files that are placed on your computer or mobile device when you visit a website. Cookies are widely used by website owners in order to make their websites work, or to work more efficiently, as well as to provide reporting information.
               </p>
               <p className="mb-4">
-                Cookies set by the website owner (in this case, Growth Insight) are called "first-party cookies." Cookies set by parties other than the website owner are called "third-party cookies." Third-party cookies enable third-party features or functionality to be provided on or through the website (e.g., advertising, interactive content, and analytics). The parties that set these third-party cookies can recognize your computer both when it visits the website in question and also when it visits certain other websites.
+                Cookies set by the website owner (in this case, Search Madarth®) are called "first-party cookies." Cookies set by parties other than the website owner are called "third-party cookies." Third-party cookies enable third-party features or functionality to be provided on or through the website (e.g., advertising, interactive content, and analytics). The parties that set these third-party cookies can recognize your computer both when it visits the website in question and also when it visits certain other websites.
               </p>
               
               <h2 className="text-xl font-semibold mt-8 mb-4">3. Why Do We Use Cookies?</h2>
@@ -62,9 +62,8 @@ export default function CookiePolicy() {
               <h2 className="text-xl font-semibold mt-8 mb-4">7. Where Can You Get Further Information?</h2>
               <p>If you have any questions about our use of cookies or other technologies, please contact us at:</p>
               <p className="mb-4">
-                Email: info@growthinsight.com<br />
-                Phone: +1 (555) 123-4567<br />
-                Address: 123 SEO Street, Digital City, 10001
+                Email: admin@madarth.com <br />
+                Address: 4, Alamelu Manga Puram Rd, Saradapuram, Mylapore, Chennai, Tamil Nadu 600004
               </p>
             </div>
           </div>

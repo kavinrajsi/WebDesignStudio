@@ -141,14 +141,13 @@ export function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-16 bg-gray-50">
+    <section id="contact" className="py-16 bg-white">
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">Get Your SEO Audit Today!</h2>
-          <p className="text-center text-gray-600 mb-8">
-            Have questions or need more details? Fill out the form below, and we'll get back to you as soon as possible.
-          </p>
-          
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">Get Your SEO Audit Today!</h2>
+        <p className="text-center text-gray-600 mb-8">
+          Have questions or need more details? Fill out the form below, and we'll get back to you as soon as possible.
+        </p>
           {isSubmitted ? (
             <div className="text-center py-8">
               <div className="mx-auto bg-green-100 rounded-full h-20 w-20 flex items-center justify-center mb-6">
@@ -240,7 +239,7 @@ export function ContactSection() {
                   onChange={handleChange}
                   placeholder="Tell us about your specific SEO needs or concerns"
                   rows={4}
-                  className="w-full"
+                  className="w-full resize-none"
                 />
               </div>
               
@@ -248,9 +247,9 @@ export function ContactSection() {
                 <Button 
                   type="submit"
                   disabled={isSubmitting}
-                  className="bg-[#B2F74D] text-[#0F3529] font-semibold px-8 py-3 h-auto hover:bg-opacity-90 transition-all transform hover:-translate-y-0.5 hover:shadow-lg"
+                  className="bg-[#B2F74D] text-[#0F3529] font-semibold px-6 py-3 h-auto border-[1px] border-[#B2F74D] hover:bg-[#0F3529] hover:text-[#B2F74D] hover:border hover:border-[#0F3529] transition-all transform"
                 >
-                  {isSubmitting ? "Submitting..." : "Get My Audit Now"}
+                  {isSubmitting ? "Submitting..." : "Submit"}
                 </Button>
               </div>
             </form>

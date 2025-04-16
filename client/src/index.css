@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  padding-top: 64px; /* Add space for fixed header */
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 64px; /* Maintain header height for mobile */
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -10,4 +24,51 @@
   body {
     @apply font-sans antialiased bg-background text-foreground;
   }
+}
+
+/* Micro-interactions */
+.section-fade-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease-out;
+}
+
+.section-fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.feature-hover {
+  transition: all 0.3s ease;
+}
+
+.feature-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+}
+
+.process-step {
+  transition: all 0.3s ease;
+}
+
+.process-step:hover {
+  transform: scale(1.02);
+}
+
+.faq-item {
+  transition: all 0.2s ease;
+}
+
+.faq-item:hover {
+  background-color: #f8f9fa;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.pulse-on-hover:hover {
+  animation: pulse 1s infinite;
 }
