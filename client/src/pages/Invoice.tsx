@@ -117,7 +117,7 @@ export default function Invoice() {
               {/* Invoice Header */}
               <div className="flex justify-between items-start mb-8">
                 <div>
-                  <img src={logoSvg} alt="Growth Insight Logo" className="h-6 mb-4" />
+                  <img src={logoSvg} alt="Search Madarth®" className="h-6 mb-4" />
                   <p className="text-gray-600">
                     4, Alamelu Manga Puram Rd,<br />
                     Saradapuram, Mylapore,<br />

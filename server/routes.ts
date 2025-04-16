@@ -1,7 +1,13 @@
+import dotenv from 'dotenv';
+
 import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import Razorpay from "razorpay";
+
+// Load environment variables
+dotenv.config();
+
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID || "",

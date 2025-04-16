@@ -14,12 +14,12 @@ export function HeroSection() {
               Get a comprehensive analysis of your website's SEO performance and actionable insights to improve your search engine rankings.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button className="bg-[#B2F74D] text-[#0F3529] font-semibold px-6 py-3 h-auto hover:bg-[#0F3529] hover:text-[#B2F74D] hover:border hover:border-[#B2F74D] transition-all transform hover:scale-105 animate-bounce-slow">
+              <Button className="bg-[#B2F74D] text-[#0F3529] font-semibold px-6 py-3 h-auto hover:bg-[#0F3529] hover:text-[#B2F74D] hover:border hover:border-[#B2F74D] transition-all transform hover:scale-105 animate-slideUp">
                 Get Your SEO Audit Now
               </Button>
             </div>
           </div>
-          <div className="relative transform transition-all duration-700 hover:scale-105 animate-float">
+          <div className="relative transform transition-all duration-700 hover:scale-105 animate-slideUp">
             <img 
               src={searchIntroImage} 
               alt="SEO Analysis Dashboard" 

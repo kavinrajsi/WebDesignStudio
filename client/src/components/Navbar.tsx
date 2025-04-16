@@ -35,7 +35,7 @@ export function Navbar() {
       <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
         <div className="flex items-center">
           <Link href="/" className="font-bold flex items-center">
-            <img src={logoSvg} alt="Growth Insight Logo" className="h-6" />
+            <img src={logoSvg} alt="Search Madarth®" className="h-6" />
           </Link>
         </div>
         

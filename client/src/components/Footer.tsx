@@ -9,7 +9,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           <div className="md:col-span-5">
             <div className="mb-4">
-              <img src={logoSvg} alt="Growth Insight Logo" className="h-6" />
+              <img src={logoSvg} alt="Search Madarth®" className="h-6" />
             </div>
             <p className="text-gray-400 mb-4">
               Helping businesses improve their online presence through data-driven SEO strategies.
