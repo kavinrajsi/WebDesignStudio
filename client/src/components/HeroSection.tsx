@@ -13,10 +13,10 @@ export function HeroSection() {
               Get a comprehensive analysis of your website's SEO performance and actionable insights to improve your search engine rankings.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button className="bg-[#B2F74D] text-[#0F3529] font-semibold px-6 py-3 h-auto hover:bg-opacity-90 transition-all transform hover:-translate-y-0.5 hover:shadow-lg">
+              <Button className="bg-[#B2F74D] text-[#0F3529] font-semibold px-6 py-3 h-auto hover:bg-[#0F3529] hover:text-[#B2F74D] hover:border hover:border-[#B2F74D] transition-all">
                 Get Your SEO Audit Now
               </Button>
-              <Button variant="outline" className="border border-white text-white px-6 py-3 h-auto hover:bg-white hover:bg-opacity-10 transition-all">
+              <Button variant="outline" className="border border-white text-white px-6 py-3 h-auto hover:bg-white hover:text-[#0F3529] transition-all">
                 Learn More
               </Button>
             </div>

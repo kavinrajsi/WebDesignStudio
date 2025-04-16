@@ -7,6 +7,7 @@ import { PricingSection } from "@/components/PricingSection";
 import { FAQSection } from "@/components/FAQSection";
 import { ContactSection } from "@/components/ContactSection";
 import { CTASection } from "@/components/CTASection";
+import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { Footer } from "@/components/Footer";
 
 export default function Home() {
@@ -18,6 +19,7 @@ export default function Home() {
         <FeaturesSection />
         <IndustriesSection />
         <ProcessSection />
+        <TestimonialsSection />
         <PricingSection />
         <FAQSection />
         <ContactSection />

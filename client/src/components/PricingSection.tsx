@@ -144,6 +144,9 @@ export function PricingSection() {
                 title: "Payment Successful!",
                 description: "Thank you for your purchase. We'll start working on your SEO audit right away.",
               });
+              
+              // Redirect to the invoice page
+              window.location.href = `/invoice?payment_id=${response.razorpay_payment_id}`;
             }
           } catch (error) {
             console.error("Payment verification error:", error);
@@ -210,7 +213,7 @@ export function PricingSection() {
               </div>
               <p className="text-gray-600 mb-6">{pkg.description}</p>
               <Button 
-                className={`w-full ${pkg.isPopular ? 'bg-[#B2F74D] text-[#0F3529]' : 'bg-[#0F3529] text-white'} font-semibold hover:bg-opacity-90 transition-all`}
+                className={`w-full ${pkg.isPopular ? 'bg-[#B2F74D] text-[#0F3529]' : 'bg-[#0F3529] text-white'} font-semibold hover:bg-[#0F3529] hover:text-[#B2F74D] hover:border hover:border-[#B2F74D] transition-all`}
                 onClick={() => handlePayment(pkg.id, pkg.priceInr)}
                 disabled={isLoading === pkg.id}
               >
@@ -240,7 +243,7 @@ export function PricingSection() {
           
           <div className="mt-10 text-center">
             <Button 
-              className="bg-[#B2F74D] text-[#0F3529] font-semibold px-8 py-3 h-auto hover:bg-opacity-90 transition-all transform hover:-translate-y-0.5 hover:shadow-lg"
+              className="bg-[#B2F74D] text-[#0F3529] font-semibold px-8 py-3 h-auto hover:bg-[#0F3529] hover:text-[#B2F74D] hover:border hover:border-[#B2F74D] transition-all"
               onClick={() => handlePayment("seo-audit", 870)}
               disabled={isLoading === "seo-audit-bottom"}
             >

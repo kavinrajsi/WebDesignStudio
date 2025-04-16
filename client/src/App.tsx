@@ -7,6 +7,7 @@ import Home from "@/pages/Home";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import TermsOfService from "@/pages/TermsOfService";
 import CookiePolicy from "@/pages/CookiePolicy";
+import Invoice from "@/pages/Invoice";
 
 function Router() {
   return (
@@ -15,6 +16,7 @@ function Router() {
       <Route path="/privacy-policy" component={PrivacyPolicy} />
       <Route path="/terms-of-service" component={TermsOfService} />
       <Route path="/cookie-policy" component={CookiePolicy} />
+      <Route path="/invoice" component={Invoice} />
       <Route component={NotFound} />
     </Switch>
   );

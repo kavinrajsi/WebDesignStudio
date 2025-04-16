@@ -6,7 +6,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Icon } from "@/components/ui/icon";
 import { Separator } from "@/components/ui/separator";
-import logoSvg from "../assets/logo.svg";
+import logoSvg from "@/assets/logo.svg";
 
 // Interface for invoice data
 interface InvoiceData {
