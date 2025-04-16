@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="#FFFFFF" rx="15" ry="15"/>
+  
+  <!-- Person -->
+  <circle cx="120" cy="120" r="50" fill="#F2D4AE"/>
+  <circle cx="120" cy="70" r="30" fill="#F2D4AE"/>
+  <path d="M90 150 Q120 200 150 150" fill="#F2B366"/>
+  <rect x="70" y="120" width="100" height="70" fill="#F09338" rx="10" ry="10"/>
+
+  <!-- Device/Phone -->
+  <rect x="160" y="140" width="70" height="120" fill="#333333" rx="5" ry="5"/>
+  <rect x="165" y="150" width="60" height="100" fill="#FFFFFF" rx="2" ry="2"/>
+
+  <!-- Charts on the phone screen -->
+  <circle cx="195" cy="180" r="20" fill="#B2F74D"/>
+  <path d="M195 180 L195 160 A20 20 0 0 1 215 180 Z" fill="#0F3529"/>
+  <rect x="175" y="210" width="40" height="5" fill="#0F3529"/>
+  <rect x="175" y="220" width="30" height="5" fill="#0F3529"/>
+  <rect x="175" y="230" width="20" height="5" fill="#0F3529"/>
+
+  <!-- SEO metrics -->
+  <rect x="250" y="80" width="100" height="15" rx="2" ry="2" fill="#f3f4f6"/>
+  <rect x="250" y="80" width="70" height="15" rx="2" ry="2" fill="#B2F74D"/>
+  
+  <rect x="250" y="110" width="100" height="15" rx="2" ry="2" fill="#f3f4f6"/>
+  <rect x="250" y="110" width="50" height="15" rx="2" ry="2" fill="#B2F74D"/>
+  
+  <rect x="250" y="140" width="100" height="15" rx="2" ry="2" fill="#f3f4f6"/>
+  <rect x="250" y="140" width="80" height="15" rx="2" ry="2" fill="#B2F74D"/>
+  
+  <rect x="250" y="170" width="100" height="15" rx="2" ry="2" fill="#f3f4f6"/>
+  <rect x="250" y="170" width="45" height="15" rx="2" ry="2" fill="#B2F74D"/>
+  
+  <rect x="250" y="200" width="100" height="15" rx="2" ry="2" fill="#f3f4f6"/>
+  <rect x="250" y="200" width="60" height="15" rx="2" ry="2" fill="#B2F74D"/>
+
+  <!-- SEO score -->
+  <circle cx="300" cy="280" r="40" fill="#D7FDAF"/>
+  <text x="300" y="285" font-family="Arial" font-size="24" text-anchor="middle" font-weight="bold" fill="#0F3529">72%</text>
+</svg>
