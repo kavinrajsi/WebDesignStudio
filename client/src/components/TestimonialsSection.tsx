@@ -93,7 +93,7 @@ export function TestimonialsSection() {
                   <p className="text-lg mb-6 italic">"{testimonial.testimonial}"</p>
                   <div className="flex items-center">
                     <Avatar className="mr-4">
-                      <AvatarFallback className="bg-[#B2F74D] text-[#0F3529]">
+                      <AvatarFallback className="bg-[#CADB3F] text-[#0F3529]">
                         {testimonial.initials}
                       </AvatarFallback>
                     </Avatar>
@@ -114,7 +114,7 @@ export function TestimonialsSection() {
                 key={index}
                 onClick={() => goToSlide(index)}
                 className={`h-3 w-3 rounded-full mx-1 transition-all ${
-                  activeSlide === index ? 'bg-[#B2F74D]' : 'bg-gray-500'
+                  activeSlide === index ? 'bg-[#CADB3F]' : 'bg-gray-500'
                 }`}
                 aria-label={`Go to testimonial ${index + 1}`}
               />

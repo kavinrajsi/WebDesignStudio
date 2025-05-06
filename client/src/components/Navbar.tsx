@@ -53,45 +53,45 @@ export function Navbar() {
             <img src={logoSvg} alt="Search Madarth®" className="h-6" />
           </Link>
         </div>
-        
+
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8">
-          <a 
-            href={isHomePage ? "#features" : "/#features"} 
-            className="hover:text-[#B2F74D] transition-colors"
+          <a
+            href={isHomePage ? "#features" : "/#features"}
+            className="hover:text-[#CADB3F] transition-colors"
             onClick={(e) => isHomePage && handleNavigation(e, "#features")}
           >
             Features
           </a>
-          <a 
-            href={isHomePage ? "#pricing" : "/#pricing"} 
-            className="hover:text-[#B2F74D] transition-colors"
+          <a
+            href={isHomePage ? "#pricing" : "/#pricing"}
+            className="hover:text-[#CADB3F] transition-colors"
             onClick={(e) => isHomePage && handleNavigation(e, "#pricing")}
           >
             Pricing
           </a>
-          <a 
-            href={isHomePage ? "#industries" : "/#industries"} 
-            className="hover:text-[#B2F74D] transition-colors"
+          <a
+            href={isHomePage ? "#industries" : "/#industries"}
+            className="hover:text-[#CADB3F] transition-colors"
             onClick={(e) => isHomePage && handleNavigation(e, "#industries")}
           >
             Industries
           </a>
-          <a 
-            href={isHomePage ? "#process" : "/#process"} 
-            className="hover:text-[#B2F74D] transition-colors"
+          <a
+            href={isHomePage ? "#process" : "/#process"}
+            className="hover:text-[#CADB3F] transition-colors"
             onClick={(e) => isHomePage && handleNavigation(e, "#process")}
           >
             Process
           </a>
-          <a href={isHomePage ? "#pricing" : "/#pricing"}  className="bg-[#B2F74D] text-[#0F3529] font-semibold border-[1px] border-[--color-border] hover:bg-[#0F3529] hover:text-[#B2F74D] hover:border hover:border-[#B2F74D] transition-all px-4 py-2 rounded-md"
+          <a href={isHomePage ? "#pricing" : "/#pricing"}  className="bg-[#CADB3F] text-[#0F3529] font-semibold border-[1px] border-[--color-border] hover:bg-[#0F3529] hover:text-[#CADB3F] hover:border hover:border-[#CADB3F] transition-all px-4 py-2 rounded-md"
            onClick={(e) => isHomePage && handleNavigation(e, "#pricing")}>
             Get Started
           </a>
         </div>
-        
+
         {/* Mobile Menu Button */}
-        <button 
+        <button
           className="md:hidden text-white"
           onClick={toggleMenu}
           aria-label="Toggle menu"
@@ -103,40 +103,40 @@ export function Navbar() {
           )}
         </button>
       </div>
-      
+
       {/* Mobile Navigation */}
       <div className={`mobile-menu md:hidden bg-[#1A5A46] fixed top-[64px] left-0 w-full z-50 px-4 py-2 shadow-lg transition-all duration-300 ${isMenuOpen ? 'block' : 'hidden'}`}>
         <div className="flex flex-col space-y-3 py-3">
-          <a 
+          <a
             href={isHomePage ? "#features" : "/#features"}
-            className="hover:text-[#B2F74D] transition-colors py-2" 
+            className="hover:text-[#CADB3F] transition-colors py-2"
             onClick={(e) => isHomePage && handleNavigation(e, "#features")}
           >
             Features
           </a>
-          <a 
+          <a
             href={isHomePage ? "#pricing" : "/#pricing"}
-            className="hover:text-[#B2F74D] transition-colors py-2" 
+            className="hover:text-[#CADB3F] transition-colors py-2"
             onClick={(e) => isHomePage && handleNavigation(e, "#pricing")}
           >
             Pricing
           </a>
-          <a 
+          <a
             href={isHomePage ? "#industries" : "/#industries"}
-            className="hover:text-[#B2F74D] transition-colors py-2" 
+            className="hover:text-[#CADB3F] transition-colors py-2"
             onClick={(e) => isHomePage && handleNavigation(e, "#industries")}
           >
             Industries
           </a>
-          <a 
+          <a
             href={isHomePage ? "#process" : "/#process"}
-            className="hover:text-[#B2F74D] transition-colors py-2" 
+            className="hover:text-[#CADB3F] transition-colors py-2"
             onClick={(e) => isHomePage && handleNavigation(e, "#process")}
           >
             Process
           </a>
-          <Button 
-            className="bg-[#B2F74D] text-[#0F3529] font-semibold border-[1px] border-[--color-border] hover:bg-[#0F3529] hover:text-[#B2F74D] hover:border hover:border-[#B2F74D] transition-all w-full"
+          <Button
+            className="bg-[#CADB3F] text-[#0F3529] font-semibold border-[1px] border-[--color-border] hover:bg-[#0F3529] hover:text-[#CADB3F] hover:border hover:border-[#CADB3F] transition-all w-full"
             onClick={closeMenu}
           >
             Get Started

@@ -172,7 +172,7 @@ export function PricingSection() {
           contact: "",
         },
         theme: {
-          color: "#B2F74D",
+          color: "#CADB3F",
         },
       };
 
@@ -209,11 +209,11 @@ export function PricingSection() {
           {packages.map((pkg) => (
             <div
               key={pkg.id}
-              className={`bg-white p-6 rounded-lg shadow-md border ${pkg.isPopular ? "border-[#B2F74D]" : "border-gray-200"} transition-all duration-300 hover:-translate-y-1 hover:shadow-xl relative overflow-hidden flex flex-col h-full justify-between`}
+              className={`bg-white p-6 rounded-lg shadow-md border ${pkg.isPopular ? "border-[#CADB3F]" : "border-gray-200"} transition-all duration-300 hover:-translate-y-1 hover:shadow-xl relative overflow-hidden flex flex-col h-full justify-between`}
             >
               {pkg.isPopular && (
                 <div className="absolute top-0 right-0">
-                  <div className="bg-[#B2F74D] text-[#0F3529] text-xs font-bold px-3 py-1 transform rotate-0 origin-top-right">
+                  <div className="bg-[#CADB3F] text-[#0F3529] text-xs font-bold px-3 py-1 transform rotate-0 origin-top-right">
                     MOST POPULAR
                   </div>
                 </div>
@@ -229,7 +229,7 @@ export function PricingSection() {
               </div>
               <p className="text-gray-600 mb-6">{pkg.description}</p>
               <Button
-                className={`w-full ${pkg.isPopular ? "bg-[#B2F74D] text-[#0F3529]" : "bg-[#0F3529] text-white"} font-semibold hover:bg-[#0F3529] hover:text-[#B2F74D] hover:border hover:border-[#0F3529] transition-all`}
+                className={`w-full ${pkg.isPopular ? "bg-[#CADB3F] text-[#0F3529]" : "bg-[#0F3529] text-white"} font-semibold hover:bg-[#0F3529] hover:text-[#CADB3F] hover:border hover:border-[#0F3529] transition-all`}
                 onClick={() => handlePayment(pkg.id, pkg.priceInr)}
                 disabled={isLoading === pkg.id}
               >
@@ -268,7 +268,7 @@ export function PricingSection() {
 
           <div className="mt-10 text-center">
             {/* <Button
-              className="bg-[#B2F74D] text-[#0F3529] font-semibold px-8 py-3 h-auto hover:bg-[#0F3529] hover:text-[#B2F74D] hover:border hover:border-[#B2F74D] transition-all bg-[#B2F74D] text-[#0F3529] font-semibold px-6 py-3 h-auto border-[1px] border-[#B2F74D] hover:bg-[#0F3529] hover:text-[#B2F74D] hover:border hover:border-[#0F3529] transition-all transform "
+              className="bg-[#CADB3F] text-[#0F3529] font-semibold px-8 py-3 h-auto hover:bg-[#0F3529] hover:text-[#CADB3F] hover:border hover:border-[#CADB3F] transition-all bg-[#CADB3F] text-[#0F3529] font-semibold px-6 py-3 h-auto border-[1px] border-[#CADB3F] hover:bg-[#0F3529] hover:text-[#CADB3F] hover:border hover:border-[#0F3529] transition-all transform "
               onClick={() => handlePayment("seo-audit", 870)}
               disabled={isLoading === "seo-audit-bottom"}
             >
@@ -276,7 +276,7 @@ export function PricingSection() {
                 ? "Processing..."
                 : "Get Your SEO Audit Now"}
             </Button> */}
-            <a href="#pricing" className="bg-[#B2F74D] text-[#0F3529] font-semibold px-6 py-3 h-auto border-[1px] border-[#B2F74D] hover:bg-[#0F3529] hover:text-[#B2F74D] hover:border hover:border-[#0F3529] transition-all transform px-4 py-2 rounded-md">
+            <a href="#pricing" className="bg-[#CADB3F] text-[#0F3529] font-semibold px-6 py-3 h-auto border-[1px] border-[#CADB3F] hover:bg-[#0F3529] hover:text-[#CADB3F] hover:border hover:border-[#0F3529] transition-all transform px-4 py-2 rounded-md">
             Start Your SEO Audit Now
           </a>
           </div>
