@@ -35,8 +35,8 @@ export function ProcessSection() {
   return (
     <section id="process" className="py-16 bg-white">
       <div className="container mx-auto px-4 md:px-6">
-        <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">How It Works (3 Simple Steps)</h2>
-        <p className="text-gray-600 mb-12 max-w-3xl mx-auto text-center">
+        <h2 className="text-2xl md:text-3xl font-bold md:text-center mb-4">How It Works (3 Simple Steps)</h2>
+        <p className="text-gray-600 mb-12 max-w-3xl mx-auto md:text-center">
           Our streamlined process ensures you get actionable insights quickly and efficiently. 
           Here's how we transform your website's performance in just three simple steps.
         </p>
@@ -51,7 +51,7 @@ export function ProcessSection() {
                 {index % 2 === 0 ? (
                   <>
                     <div className={`${index % 2 === 0 ? 'order-2 md:order-1' : ''}`}>
-                      <div className="rounded-lg p-8 h-64 flex items-center justify-center">
+                      <div className="rounded-lg md:p-8  flex items-center justify-center">
                         <picture>
                           <source srcSet={step.imageWebp} type="image/webp" />
                           <img src={step.image} alt={`Step ${step.number} image`} className="h-auto w-auto max-w-full max-h-full" loading="lazy" />
@@ -72,7 +72,7 @@ export function ProcessSection() {
                       <p className="text-gray-600">{step.description}</p>
                     </div>
                     <div>
-                      <div className="rounded-lg p-8 h-64 flex items-center justify-center">
+                      <div className="rounded-lg md:p-8  flex items-center justify-center">
                         <picture>
                           <source srcSet={step.imageWebp} type="image/webp" />
                           <img src={step.image} alt={`Step ${step.number} image`} className="h-auto w-auto max-w-full max-h-full" loading="lazy" />

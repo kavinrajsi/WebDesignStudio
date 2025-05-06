@@ -40,12 +40,12 @@ export function FAQSection() {
   return (
     <section id="faq" className="py-16 bg-gray-50">
       <div className="container mx-auto px-4 md:px-6">
-        <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">Frequently Asked Questions (FAQ)</h2>
-        <p className="text-gray-600 mb-12 max-w-3xl mx-auto text-center">
+        <h2 className="text-2xl md:text-3xl font-bold md:text-center mb-4">Frequently Asked Questions (FAQ)</h2>
+        <p className="text-gray-600 mb-12 max-w-3xl mx-auto md:text-center">
           Get answers to common questions about our SEO audit service and process. 
           If you can't find what you're looking for, feel free to reach out to our team.
         </p>
-        
+
         <div className="max-w-3xl mx-auto">
           <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq, index) => (

@@ -34,7 +34,7 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="md:col-span-4 flex flex-col items-center">
+          <div className="md:col-span-4 md:flex md:flex-col md:items-center">
             <h4 className="font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li><Link href="/" className="text-gray-400 hover:text-[#CADB3F]">Home</Link></li>
@@ -64,7 +64,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between">
           <p className="text-gray-500 text-sm mb-4 md:mb-0">
             &copy; {new Date().getFullYear()} Pixel Boy Media Publicities Private Limited. All rights reserved.
           </p>

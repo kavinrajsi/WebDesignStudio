@@ -25,6 +25,23 @@ export function HeroSection() {
               Get a comprehensive analysis of your website's SEO performance and
               actionable insights to improve your search engine rankings.
             </p>
+          <div className="relative transform transition-all duration-700 mb-8 md:order-2 md:hidden">
+            <AspectRatio
+              ratio={35 / 30}
+              className="bg-gray-800/20 rounded-lg overflow-hidden shadow-xl"
+            >
+              <picture className="w-full h-full">
+                <source srcSet={searchIntroImageWebp} type="image/webp" />
+                <img
+                  src={searchIntroImage}
+                  alt="SEO Analysis Dashboard"
+                  className="w-full h-auto rounded-lg shadow-xl"
+                  loading="eager"
+                  fetchpriority="high"
+                />
+              </picture>
+            </AspectRatio>
+          </div>
             <div className="flex flex-col sm:flex-row gap-4">
               <a
                 href="#pricing"
@@ -34,7 +51,7 @@ export function HeroSection() {
               </a>
             </div>
           </div>
-          <div className="relative transform transition-all duration-700 order-1 md:order-2">
+          <div className="relative transform transition-all duration-700 md:order-2 hidden md:inline-block">
             <AspectRatio
               ratio={35 / 30}
               className="bg-gray-800/20 rounded-lg overflow-hidden shadow-xl"
