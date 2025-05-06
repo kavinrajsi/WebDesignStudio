@@ -50,7 +50,7 @@ export function FeaturesSection() {
             >
               <div className="flex items-center mb-4">
                 <div className="bg-[#1A5A46] p-3 rounded-full mr-4">
-                  <Icon name={feature.icon} className="text-[#B2F74D]" />
+                  <Icon name={feature.icon} className="text-[#CADB3F]" />
                 </div>
                 <h3 className="font-semibold text-xl">{feature.title}</h3>
               </div>

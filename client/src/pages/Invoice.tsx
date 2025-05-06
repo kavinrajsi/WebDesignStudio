@@ -98,7 +98,7 @@ export default function Invoice() {
         <div className="container mx-auto px-4 md:px-6">
           {loading ? (
             <div className="flex justify-center items-center h-64">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#B2F74D]"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#CADB3F]"></div>
             </div>
           ) : error ? (
             <Card className="max-w-3xl mx-auto">
@@ -212,7 +212,7 @@ export default function Invoice() {
                   <Icon name="printer" className="mr-2 h-4 w-4" />
                   Print
                 </Button>
-                <Button onClick={handleDownloadPDF} className="flex items-center bg-[#B2F74D] text-[#0F3529] hover:bg-[#0F3529] hover:text-[#B2F74D] hover:border hover:border-[#B2F74D]">
+                <Button onClick={handleDownloadPDF} className="flex items-center bg-[#CADB3F] text-[#0F3529] hover:bg-[#0F3529] hover:text-[#CADB3F] hover:border hover:border-[#CADB3F]">
                   <Icon name="download" className="mr-2 h-4 w-4" />
                   Download PDF
                 </Button>

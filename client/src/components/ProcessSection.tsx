@@ -1,23 +1,33 @@
 import { Button } from "@/components/ui/button";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import searchHowItWorkStep1Submit from "../assets/search-how-it-work-step-1-submit.png";
+import searchHowItWorkStep1SubmitWebp from "../assets/search-how-it-work-step-1-submit.webp";
+import searchHowItWorkStep2AihumanAnalysis from "../assets/search-how-it-work-step-2-ai-human-analysis.png";
+import searchHowItWorkStep2AihumanAnalysisWebp from "../assets/search-how-it-work-step-2-ai-human-analysis.webp";
+import searchHowItWorkStep3AuditReport from "../assets/search-how-it-work-step-3-audit-report.webp";
+import searchHowItWorkStep3AuditReportPng from "../assets/search-how-it-work-step-3-audit-report.png";
 
 const steps = [
   {
     number: 1,
     title: "Submit Your Website",
     description: "Simply provide your website URL and tell us about your specific concerns or goals. Our system will start crawling your pages immediately.",
-    icon: "globe"
+    image: searchHowItWorkStep1Submit,
+    imageWebp: searchHowItWorkStep1SubmitWebp,
   },
   {
     number: 2,
     title: "AI-Powered + Human Analysis",
     description: "Our AI algorithms scan your website, and then our SEO experts review the data for context, insights, and strategic recommendations.",
-    icon: "brain"
+    image: searchHowItWorkStep2AihumanAnalysis,
+    imageWebp: searchHowItWorkStep2AihumanAnalysisWebp,
   },
   {
     number: 3,
     title: "Receive Your Audit Report",
     description: "A comprehensive, easy-to-understand report with prioritized recommendations, technical fixes, content suggestions, and competitive insights.",
-    icon: "file-text"
+    image: searchHowItWorkStep3AuditReport,
+    imageWebp: searchHowItWorkStep3AuditReportPng,
   }
 ];
 
@@ -33,7 +43,7 @@ export function ProcessSection() {
         
         <div className="relative">
           {/* Timeline connector */}
-          <div className="hidden md:block absolute top-0 bottom-0 left-1/2 w-0.5 bg-[#B2F74D] -translate-x-1/2 z-0"></div>
+          <div className="hidden md:block absolute top-0 bottom-0 left-1/2 w-0.5 bg-[#CADB3F] -translate-x-1/2 z-0"></div>
           
           <div className="space-y-16 md:space-y-32 relative">
             {steps.map((step, index) => (
@@ -41,26 +51,15 @@ export function ProcessSection() {
                 {index % 2 === 0 ? (
                   <>
                     <div className={`${index % 2 === 0 ? 'order-2 md:order-1' : ''}`}>
-                      <div className="bg-gray-100 rounded-lg p-8 h-64 flex items-center justify-center">
-                        {step.icon === "globe" && (
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-[#1A5A46]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                          </svg>
-                        )}
-                        {step.icon === "brain" && (
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-[#1A5A46]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                          </svg>
-                        )}
-                        {step.icon === "file-text" && (
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-[#1A5A46]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                          </svg>
-                        )}
+                      <div className="rounded-lg p-8 h-64 flex items-center justify-center">
+                        <picture>
+                          <source srcSet={step.imageWebp} type="image/webp" />
+                          <img src={step.image} alt={`Step ${step.number} image`} className="h-auto w-auto max-w-full max-h-full" loading="lazy" />
+                        </picture>
                       </div>
                     </div>
                     <div className={`${index % 2 === 0 ? 'order-1 md:order-2 md:text-right' : 'md:text-left'}`}>
-                      <div className="inline-block bg-[#B2F74D] px-3 py-1 rounded-full text-[#0F3529] font-semibold mb-2">STEP {step.number}</div>
+                      <div className="inline-block bg-[#CADB3F] px-3 py-1 rounded-full text-[#0F3529] font-semibold mb-2">STEP {step.number}</div>
                       <h3 className="text-xl font-bold mb-3">{step.title}</h3>
                       <p className="text-gray-600">{step.description}</p>
                     </div>
@@ -68,27 +67,16 @@ export function ProcessSection() {
                 ) : (
                   <>
                     <div className={`${index % 2 !== 0 ? 'md:text-left' : 'md:text-right'}`}>
-                      <div className="inline-block bg-[#B2F74D] px-3 py-1 rounded-full text-[#0F3529] font-semibold mb-2">STEP {step.number}</div>
+                      <div className="inline-block bg-[#CADB3F] px-3 py-1 rounded-full text-[#0F3529] font-semibold mb-2">STEP {step.number}</div>
                       <h3 className="text-xl font-bold mb-3">{step.title}</h3>
                       <p className="text-gray-600">{step.description}</p>
                     </div>
                     <div>
-                      <div className="bg-gray-100 rounded-lg p-8 h-64 flex items-center justify-center">
-                        {step.icon === "globe" && (
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-[#1A5A46]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                          </svg>
-                        )}
-                        {step.icon === "brain" && (
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-[#1A5A46]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                          </svg>
-                        )}
-                        {step.icon === "file-text" && (
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-[#1A5A46]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                          </svg>
-                        )}
+                      <div className="rounded-lg p-8 h-64 flex items-center justify-center">
+                        <picture>
+                          <source srcSet={step.imageWebp} type="image/webp" />
+                          <img src={step.image} alt={`Step ${step.number} image`} className="h-auto w-auto max-w-full max-h-full" loading="lazy" />
+                        </picture>
                       </div>
                     </div>
                   </>
@@ -99,7 +87,7 @@ export function ProcessSection() {
         </div>
         
         <div className="mt-16 text-center">
-          <a href="#pricing" className="bg-[#B2F74D] text-[#0F3529] font-semibold px-6 py-3 h-auto border-[1px] border-[#B2F74D] hover:bg-[#0F3529] hover:text-[#B2F74D] hover:border hover:border-[#0F3529] transition-all transform px-4 py-2 rounded-md">
+          <a href="#pricing" className="bg-[#CADB3F] text-[#0F3529] font-semibold px-6 py-3 h-auto border-[1px] border-[#CADB3F] hover:bg-[#0F3529] hover:text-[#CADB3F] hover:border hover:border-[#0F3529] transition-all transform px-4 py-2 rounded-md">
             Start Your SEO Audit Now
           </a>
         </div>
