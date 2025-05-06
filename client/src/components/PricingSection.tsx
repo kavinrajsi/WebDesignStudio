@@ -194,7 +194,7 @@ export function PricingSection() {
   return (
     <section id="pricing" className="py-16 bg-white">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="text-center mb-12">
+        <div className="md:text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold mb-4">
             Pricing & Services
           </h2>
@@ -240,10 +240,10 @@ export function PricingSection() {
         </div>
 
         <div className="py-16">
-          <h3 className="text-2xl font-bold mb-6 text-center text-[#0F3529]">
+          <h3 className="text-2xl font-bold mb-6 md:text-center text-[#0F3529]">
             What You Can Expect When You Partner with Us
           </h3>
-          <p className="text-gray-600 mb-12 text-center max-w-3xl mx-auto text-lg">
+          <p className="text-gray-600 mb-12 md:text-center max-w-3xl mx-auto text-lg">
             We don't just analyze your website—we provide real, actionable
             insights that drive measurable growth. Here's what you get when you
             choose our AI-powered SEO audit service:
