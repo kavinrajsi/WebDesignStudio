@@ -41,11 +41,11 @@ export function ProcessSection() {
           Here's how we transform your website's performance in just three simple steps.
         </p>
         
-        <div className="relative">
+        <div className="relative max-w-4xl mx-auto">
           {/* Timeline connector */}
           <div className="hidden md:block absolute top-0 bottom-0 left-1/2 w-0.5 bg-[#CADB3F] -translate-x-1/2 z-0"></div>
           
-          <div className="space-y-16 md:space-y-32 relative">
+          <div className="space-y-16 md:space-y-16 relative">
             {steps.map((step, index) => (
               <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center relative z-10">
                 {index % 2 === 0 ? (

@@ -240,7 +240,7 @@ export function PricingSection() {
         </div>
 
         <div className="py-16">
-          <h2 className="text-[28px] leading-[32px] md:text-3xl md:leading-[1.5] font-bold mb-4">
+          <h2 className="text-[28px] leading-[32px] md:text-3xl md:leading-[1.5] font-bold mb-4 md:text-center">
             What You Can Expect When You Partner with Us
           </h2>
           <p className="text-gray-600 mb-12 md:text-center max-w-3xl mx-auto text-lg">
