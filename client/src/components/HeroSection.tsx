@@ -45,7 +45,7 @@ export function HeroSection() {
             <div className="flex flex-col sm:flex-row gap-4">
               <a
                 href="#pricing"
-                className="bg-[#CADB3F] text-[#0F3529] font-semibold h-auto border-[1px] border-[--color-border] hover:bg-[#0F3529] hover:text-[#CADB3F] hover:border hover:border-[#CADB3F] transition-all transform inline-block px-4 py-2 rounded-md"
+                className="bg-[#CADB3F] text-[#0F3529] font-semibold px-6 py-3 h-auto border-[1px] border-[#CADB3F] hover:bg-[#0F3529] hover:text-[#CADB3F] hover:border hover:border-[#0F3529] transition-all transform px-4 py-2 rounded-md text-center"
               >
                 Start Your SEO Audit Now
               </a>

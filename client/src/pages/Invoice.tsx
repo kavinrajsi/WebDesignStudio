@@ -126,7 +126,7 @@ export default function Invoice() {
                   </p>
                 </div>
                 <div className="text-right">
-                  <h1 className="text-2xl font-bold">INVOICE</h1>
+                  <h1 className="text-[28px] font-bold">INVOICE</h1>
                   <p className="text-gray-600 mb-2">#{invoice.id}</p>
                   <div className="bg-green-100 text-green-800 font-semibold px-3 py-1 rounded text-sm inline-block">
                     {invoice.status.toUpperCase()}

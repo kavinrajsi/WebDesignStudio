@@ -35,7 +35,7 @@ export function ProcessSection() {
   return (
     <section id="process" className="py-16 bg-white">
       <div className="container mx-auto px-4 md:px-6">
-        <h2 className="text-2xl md:text-3xl font-bold md:text-center mb-4">How It Works (3 Simple Steps)</h2>
+        <h2 className="text-[28px] leading-[32px] md:text-3xl md:leading-[1.5] font-bold md:text-center mb-4">How It Works (3 Simple Steps)</h2>
         <p className="text-gray-600 mb-12 max-w-3xl mx-auto md:text-center">
           Our streamlined process ensures you get actionable insights quickly and efficiently. 
           Here's how we transform your website's performance in just three simple steps.

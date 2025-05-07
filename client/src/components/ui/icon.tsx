@@ -1,5 +1,4 @@
 import React from "react";
-import { LucideProps } from "lucide-react";
 import {
   ChartBar,
   Clock,
@@ -23,7 +22,10 @@ import {
   Facebook,
   Linkedin,
   Instagram,
-  HeartPulse
+  HeartPulse,
+  ChartScatter,
+  IndianRupee,
+  LucideProps
 } from "lucide-react";
 
 interface IconProps extends LucideProps {
@@ -54,7 +56,9 @@ export function Icon({ name, ...props }: IconProps) {
     "twitter": Twitter,
     "facebook": Facebook,
     "linkedin": Linkedin,
-    "instagram": Instagram
+    "instagram": Instagram,
+    "chart-scatter": ChartScatter,
+    "indian-rupee": IndianRupee
   };
 
   const IconComponent = icons[name];

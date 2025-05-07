@@ -27,7 +27,7 @@ const features = [
     description: "Quick turnaround so you can start implementing improvements without delay."
   },
   {
-    icon: "search-dollar",
+    icon: "chart-scatter",
     title: "Competitor Analysis",
     description: "Understand how you stack up against competitors and identify opportunities."
   }
@@ -35,9 +35,9 @@ const features = [
 
 export function FeaturesSection() {
   return (
-    <section id="features" className="py-16 bg-white">
+    <section id="features" className="py-16 bg-gray-50">
       <div className="container mx-auto px-4 md:px-6">
-        <h2 className="text-2xl md:text-3xl font-bold md:text-center mb-4">Why Choose Our SEO Audit?</h2>
+        <h2 className="text-[28px] leading-[32px] md:text-3xl md:leading-[1.5] font-bold md:text-center mb-4">Why Choose Our SEO Audit?</h2>
         <p className="md:text-center text-gray-600 mb-12 max-w-3xl mx-auto">
           Our AI-driven approach combined with human expertise delivers a superior experience. Here's what our comprehensive approach ensures you get:
         </p>

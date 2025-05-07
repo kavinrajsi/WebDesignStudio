@@ -74,7 +74,7 @@ export function TestimonialsSection() {
     <section className="py-16 bg-[#0F3529] text-white">
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">What Our Clients Say About Us</h2>
+          <h2 className="text-[28px] leading-[32px] md:text-3xl md:leading-[1.5] font-bold mb-4">What Our Clients Say About Us</h2>
           <p className="text-gray-300 max-w-3xl mx-auto">
             Our SEO service is designed to empower your business growth with
             innovative solutions and unwavering commitment.
