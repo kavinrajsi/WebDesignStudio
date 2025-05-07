@@ -144,7 +144,7 @@ export function ContactSection() {
     <section id="contact" className="py-16 bg-white">
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-4xl mx-auto bg-white p-4 md:p-8 rounded-lg shadow-md">
-        <h2 className="text-2xl md:text-3xl font-bold md:text-center mb-4">Get Your SEO Audit Today!</h2>
+        <h2 className="text-[28px] leading-[32px] md:text-3xl md:leading-[1.5] font-bold md:text-center mb-4">Get Your SEO Audit Today!</h2>
         <p className="md:text-center text-gray-600 mb-8">
           Have questions or need more details? Fill out the form below, and we'll get back to you as soon as possible.
         </p>
@@ -153,7 +153,7 @@ export function ContactSection() {
               <div className="mx-auto bg-green-100 rounded-full h-20 w-20 flex items-center justify-center mb-6">
                 <Check className="h-10 w-10 text-green-600" />
               </div>
-              <h3 className="text-2xl font-bold mb-4">Thank You!</h3>
+              <h3 className="text-[28px] font-bold mb-4">Thank You!</h3>
               <p className="text-gray-600 mb-6">
                 Your submission has been received successfully. We'll analyze your website and get back to you within 48 hours with your SEO audit report.
               </p>
