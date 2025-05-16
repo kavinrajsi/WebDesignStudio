@@ -5,8 +5,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development tsx server/index.ts",
-    "build": "mkdir -p dist/public && vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist && npm run copy:api",
-    "copy:api": "mkdir -p dist/public && cpx 'api/**/*' 'dist/public/api'",
+    "build": "rm -rf dist && vite build && npm run build:server && npm run copy:api",
+    "build:server": "esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
+    "copy:api": "mkdir -p dist/public/api && cpx 'api/**/*' 'dist/public/api'",
     "start": "NODE_ENV=production node dist/index.js",
     "check": "tsc"
   },
