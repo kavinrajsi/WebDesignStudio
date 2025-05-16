@@ -3,11 +3,38 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 
+interface RazorpayResponse {
+  razorpay_order_id: string;
+  razorpay_payment_id: string;
+  razorpay_signature: string;
+}
 
 declare global {
   interface Window {
-    Razorpay: any;
+    Razorpay: new (options: RazorpayOptions) => RazorpayInstance;
   }
+}
+
+interface RazorpayOptions {
+  key: string;
+  amount: number;
+  currency: string;
+  name: string;
+  description: string;
+  order_id: string;
+  handler: (response: RazorpayResponse) => void;
+  prefill: {
+    name: string;
+    email: string;
+    contact: string;
+  };
+  theme: {
+    color: string;
+  };
+}
+
+interface RazorpayInstance {
+  open: () => void;
 }
 
 const benefits = [
@@ -20,7 +47,7 @@ const benefits = [
 
 const benefitsDescriptions = [
   "Unlock greater organic visibility and attract more qualified visitors with data-driven SEO improvements.",
-  "Optimize your website's structure and content to turn traffic into paying customers effectively.",
+  "Optimize your website&apos;s structure and content to turn traffic into paying customers effectively.",
   "Build credibility, increase awareness, and position your business as an authority in your industry.",
   "Get a detailed report with easy-to-understand recommendations, helping you make informed decisions.",
   "Our goal is your long-term success—our insights help you stay ahead in an ever-evolving digital landscape.",
@@ -34,7 +61,7 @@ const packages = [
     priceInr: 870,
     alternatePrice: "870 INR + GST",
     description:
-      "Get a comprehensive analysis of your website's SEO performance.",
+      "Get a comprehensive analysis of your website&apos;s SEO performance.",
     isPopular: true,
   },
   {
@@ -67,11 +94,8 @@ const packages = [
 ];
 
 export function PricingSection() {
-
   const [isLoading, setIsLoading] = useState<string | null>(null);
-  const [showRazorpayModal, setShowRazorpayModal] = useState(false);
 
-  // Load Razorpay script when component mounts
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
@@ -84,7 +108,6 @@ export function PricingSection() {
   }, []);
 
   const handlePayment = async (packageId: string, amount: number | null) => {
-    // For custom pricing packages, redirect to contact form
     if (!amount) {
       document
         .getElementById("contact")
@@ -96,11 +119,10 @@ export function PricingSection() {
     setIsLoading(packageId);
 
     try {
-      // Create Razorpay order
       const orderResponse = await fetch("/api/create-order", {
         method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           amount: amount,
@@ -117,21 +139,19 @@ export function PricingSection() {
         throw new Error("Failed to create order");
       }
 
-      // Initialize Razorpay payment
-      const options = {
+      const options: RazorpayOptions = {
         key: orderData.keyId,
         amount: orderData.amount,
         currency: orderData.currency,
         name: "Search Madarth",
         description: "SEO Audit Services",
         order_id: orderData.orderId,
-        handler: async function (response: any) {
+        handler: async function (response: RazorpayResponse) {
           try {
-            // Verify payment
             const verificationResponse = await fetch("/api/verify-payment", {
               method: "POST",
               headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
               },
               body: JSON.stringify({
                 razorpay_order_id: response.razorpay_order_id,
@@ -142,14 +162,16 @@ export function PricingSection() {
             const verificationData = await verificationResponse.json();
 
             if (verificationData.success) {
-              alert("Payment Successful! Thank you for your purchase. We'll start working on your SEO audit right away.");
-
-              // Redirect to the invoice page
+              alert(
+                "Payment Successful! Thank you for your purchase. We&apos;ll start working on your SEO audit right away."
+              );
               window.location.href = `/invoice?payment_id=${response.razorpay_payment_id}`;
             }
           } catch (error) {
             console.error("Payment verification error:", error);
-            alert("Payment Verification Failed: There was an issue verifying your payment. Please contact support.");
+            alert(
+              "Payment Verification Failed: There was an issue verifying your payment. Please contact support."
+            );
           }
         },
         prefill: {
@@ -166,7 +188,9 @@ export function PricingSection() {
       razorpay.open();
     } catch (error) {
       console.error("Payment error:", error);
-      alert("Payment Failed: There was an issue processing your payment. Please try again later.");
+      alert(
+        "Payment Failed: There was an issue processing your payment. Please try again later."
+      );
     } finally {
       setIsLoading(null);
     }
@@ -177,7 +201,7 @@ export function PricingSection() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="md:text-center mb-12">
           <h2 className="text-[28px] leading-[32px] md:text-3xl md:leading-[1.5] font-bold mb-4">
-            Pricing & Services
+            Pricing &amp; Services
           </h2>
           <p className="text-gray-600 max-w-3xl mx-auto">
             Our audit service is designed for all types of website owners,
@@ -190,7 +214,9 @@ export function PricingSection() {
           {packages.map((pkg) => (
             <div
               key={pkg.id}
-              className={`bg-white p-6 rounded-lg shadow-md border ${pkg.isPopular ? "border-[#CADB3F]" : "border-gray-200"} transition-all duration-300 hover:-translate-y-1 hover:shadow-xl relative overflow-hidden flex flex-col h-full justify-between`}
+              className={`bg-white p-6 rounded-lg shadow-md border ${
+                pkg.isPopular ? "border-[#CADB3F]" : "border-gray-200"
+              } transition-all duration-300 hover:-translate-y-1 hover:shadow-xl relative overflow-hidden flex flex-col h-full justify-between`}
             >
               {pkg.isPopular && (
                 <div className="absolute top-0 right-0">
@@ -210,7 +236,11 @@ export function PricingSection() {
               </div>
               <p className="text-gray-600 mb-6">{pkg.description}</p>
               <Button
-                className={`w-full ${pkg.isPopular ? "bg-[#CADB3F] text-[#0F3529]" : "bg-[#0F3529] text-white"} font-semibold hover:bg-[#0F3529] hover:text-[#CADB3F] hover:border hover:border-[#0F3529] transition-all`}
+                className={`w-full ${
+                  pkg.isPopular
+                    ? "bg-[#CADB3F] text-[#0F3529]"
+                    : "bg-[#0F3529] text-white"
+                } font-semibold hover:bg-[#0F3529] hover:text-[#CADB3F] hover:border hover:border-[#0F3529] transition-all`}
                 onClick={() => handlePayment(pkg.id, pkg.priceInr)}
                 disabled={isLoading === pkg.id}
               >
@@ -225,9 +255,9 @@ export function PricingSection() {
             What You Can Expect When You Partner with Us
           </h2>
           <p className="text-gray-600 mb-12 md:text-center max-w-3xl mx-auto text-lg">
-            We don't just analyze your website—we provide real, actionable
-            insights that drive measurable growth. Here's what you get when you
-            choose our AI-powered SEO audit service:
+            We don&apos;t just analyze your website—we provide real, actionable
+            insights that drive measurable growth. Here&apos;s what you get when
+            you choose our AI-powered SEO audit service:
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -239,7 +269,9 @@ export function PricingSection() {
                 <div className="h-16 w-16 bg-[#E8F5E9] rounded-full flex items-center justify-center mb-6">
                   <Check className="h-8 w-8 text-[#0F3529]" />
                 </div>
-                <h4 className="font-bold text-xl mb-3 text-[#0F3529]">{benefit}</h4>
+                <h4 className="font-bold text-xl mb-3 text-[#0F3529]">
+                  {benefit}
+                </h4>
                 <p className="text-gray-600 leading-relaxed">
                   {benefitsDescriptions[index]}
                 </p>
@@ -248,18 +280,12 @@ export function PricingSection() {
           </div>
 
           <div className="mt-10 text-center">
-            {/* <Button
-              className="bg-[#CADB3F] text-[#0F3529] font-semibold px-8 py-3 h-auto hover:bg-[#0F3529] hover:text-[#CADB3F] hover:border hover:border-[#CADB3F] transition-all bg-[#CADB3F] text-[#0F3529] font-semibold px-6 py-3 h-auto border-[1px] border-[#CADB3F] hover:bg-[#0F3529] hover:text-[#CADB3F] hover:border hover:border-[#0F3529] transition-all transform "
-              onClick={() => handlePayment("seo-audit", 870)}
-              disabled={isLoading === "seo-audit-bottom"}
+            <a
+              href="#pricing"
+              className="bg-[#CADB3F] text-[#0F3529] font-semibold px-6 py-3 h-auto border-[1px] border-[#CADB3F] hover:bg-[#0F3529] hover:text-[#CADB3F] hover:border hover:border-[#0F3529] transition-all transform px-4 py-2 rounded-md"
             >
-              {isLoading === "seo-audit-bottom"
-                ? "Processing..."
-                : "Get Your SEO Audit Now"}
-            </Button> */}
-            <a href="#pricing" className="bg-[#CADB3F] text-[#0F3529] font-semibold px-6 py-3 h-auto border-[1px] border-[#CADB3F] hover:bg-[#0F3529] hover:text-[#CADB3F] hover:border hover:border-[#0F3529] transition-all transform px-4 py-2 rounded-md">
-            Start Your SEO Audit Now
-          </a>
+              Start Your SEO Audit Now
+            </a>
           </div>
         </div>
       </div>

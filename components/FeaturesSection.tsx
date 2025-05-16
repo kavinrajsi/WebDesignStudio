@@ -22,34 +22,35 @@ function Icon({ name, className }: { name: keyof typeof iconMap; className?: str
   return <LucideIcon className={className} />;
 }
 
+// Explicitly type `icon` to match keys of `iconMap`
 const features = [
   {
-    icon: "chart-line",
+    icon: "chart-line" as const,
     title: "Detailed Technical Analysis",
     description: "Identify and fix critical SEO issues that are holding back your site's performance.",
   },
   {
-    icon: "lightbulb",
+    icon: "lightbulb" as const,
     title: "Actionable Recommendations",
     description: "Get specific steps that you can implement immediately to improve your rankings.",
   },
   {
-    icon: "Bot",
+    icon: "Bot" as const,
     title: "AI Analysis + Human Expertise",
     description: "Our AI identifies patterns while our SEO experts provide contextual insights.",
   },
   {
-    icon: "gauge",
+    icon: "gauge" as const,
     title: "Faster & Smarter Optimization",
     description: "Save time with prioritized recommendations that focus on high-impact improvements.",
   },
   {
-    icon: "clock",
+    icon: "clock" as const,
     title: "Delivered Within 48 Hours",
     description: "Quick turnaround so you can start implementing improvements without delay.",
   },
   {
-    icon: "chart-scatter",
+    icon: "chart-scatter" as const,
     title: "Competitor Analysis",
     description: "Understand how you stack up against competitors and identify opportunities.",
   },
@@ -63,7 +64,7 @@ export function FeaturesSection() {
           Why Choose Our SEO Audit?
         </h2>
         <p className="md:text-center text-gray-600 mb-12 max-w-3xl mx-auto">
-          Our AI-driven approach combined with human expertise delivers a superior experience. Here's what
+          Our AI-driven approach combined with human expertise delivers a superior experience. Here&apos;s what
           our comprehensive approach ensures you get:
         </p>
 

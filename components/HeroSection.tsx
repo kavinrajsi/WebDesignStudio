@@ -1,7 +1,4 @@
-import { Button } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
- 
-
 
 export function HeroSection() {
   return (
@@ -16,11 +13,10 @@ export function HeroSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div className="order-2 md:order-1">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 animate-fadeIn">
-              Unlock Your Website's Potential with Our{" "}
-              <span className="text-[#CADB3F]">AI-Powered</span> SEO Audit
+              Unlock Your Website&apos;s Potential with Our <span className="text-[#CADB3F]">AI-Powered</span> SEO Audit
             </h1>
             <p className="text-gray-300 mb-8 text-lg animate-slideUp">
-              Get a comprehensive analysis of your website's SEO performance and
+              Get a comprehensive analysis of your website&apos;s SEO performance and
               actionable insights to improve your search engine rankings.
             </p>
           <div className="relative transform transition-all duration-700 mb-8 md:order-2 md:hidden">

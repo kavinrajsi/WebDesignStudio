@@ -1,7 +1,7 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
@@ -55,7 +55,14 @@ export function Navbar() {
       <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
         <div className="flex items-center">
           <Link href="/" className="font-bold flex items-center">
-            <img src="/assets/logo.svg" alt="Search Madarth®" className="h-6" />
+            <Image
+              src="/assets/logo.svg"
+              alt="Search Madarth®"
+              width={96} // adjust as needed
+              height={24} // adjust as needed
+              priority
+              className="h-6"
+            />
           </Link>
         </div>
 
