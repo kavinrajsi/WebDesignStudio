@@ -9,22 +9,31 @@ async function throwIfResNotOk(res: Response) {
 
 export async function apiRequest<T = any>(
   url: string,
-  options?: RequestInit,
+  options: RequestInit = {}
 ): Promise<T> {
   const isDev = import.meta.env.DEV;
   const baseURL = isDev 
     ? '' // In development, Vite proxy handles this
-    : import.meta.env.VITE_API_URL || 'https://seoauditsolutions.com';
+    : import.meta.env.VITE_API_URL || 'https://www.seoauditsolutions.com';
   
-  const fullUrl = url.startsWith('/') ? `${baseURL}${url}` : url;
+  const fullUrl = url.startsWith('http') ? url : 
+                 (url.startsWith('/') ? `${baseURL}${url}` : `${baseURL}/${url}`);
+
+  // Ensure headers are properly set
+  const headers = new Headers(options.headers);
+  if (options.body && !headers.has('Content-Type')) {
+    headers.set('Content-Type', 'application/json');
+  }
+
+  // Ensure credentials are included for cross-origin requests
+  const credentials: RequestCredentials = isDev ? 'include' : 'same-origin';
 
   const res = await fetch(fullUrl, {
     ...options,
-    headers: {
-      ...options?.headers,
-      ...(options?.body ? { "Content-Type": "application/json" } : {}),
-    },
-    credentials: isDev ? "include" : "same-origin",
+    headers,
+    credentials,
+    mode: 'cors',
+    cache: 'no-cache'
   });
 
   await throwIfResNotOk(res);
