@@ -11,7 +11,11 @@ export async function apiRequest<T = any>(
   url: string,
   options?: RequestInit,
 ): Promise<T> {
-  const baseURL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:3000';
+  const isDev = import.meta.env.DEV;
+  const baseURL = isDev 
+    ? '' // In development, Vite proxy handles this
+    : import.meta.env.VITE_API_URL || 'https://seoauditsolutions.com';
+  
   const fullUrl = url.startsWith('/') ? `${baseURL}${url}` : url;
 
   const res = await fetch(fullUrl, {
@@ -20,7 +24,7 @@ export async function apiRequest<T = any>(
       ...options?.headers,
       ...(options?.body ? { "Content-Type": "application/json" } : {}),
     },
-    credentials: "include",
+    credentials: isDev ? "include" : "same-origin",
   });
 
   await throwIfResNotOk(res);
