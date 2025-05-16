@@ -11,7 +11,10 @@ export async function apiRequest<T = any>(
   url: string,
   options?: RequestInit,
 ): Promise<T> {
-  const res = await fetch(url, {
+  const baseURL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:3000';
+  const fullUrl = url.startsWith('/') ? `${baseURL}${url}` : url;
+
+  const res = await fetch(fullUrl, {
     ...options,
     headers: {
       ...options?.headers,
