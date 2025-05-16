@@ -3,39 +3,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 
-interface RazorpayResponse {
-  razorpay_order_id: string;
-  razorpay_payment_id: string;
-  razorpay_signature: string;
-}
 
-declare global {
-  interface Window {
-    Razorpay: new (options: RazorpayOptions) => RazorpayInstance;
-  }
-}
-
-interface RazorpayOptions {
-  key: string;
-  amount: number;
-  currency: string;
-  name: string;
-  description: string;
-  order_id: string;
-  handler: (response: RazorpayResponse) => void;
-  prefill: {
-    name: string;
-    email: string;
-    contact: string;
-  };
-  theme: {
-    color: string;
-  };
-}
-
-interface RazorpayInstance {
-  open: () => void;
-}
 
 const benefits = [
   "Higher Search Engine Rankings",
@@ -96,17 +64,6 @@ const packages = [
 export function PricingSection() {
   const [isLoading, setIsLoading] = useState<string | null>(null);
 
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.async = true;
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
-
   const handlePayment = async (packageId: string, amount: number | null) => {
     if (!amount) {
       document
@@ -116,84 +73,11 @@ export function PricingSection() {
       return;
     }
 
-    setIsLoading(packageId);
-
-    try {
-      const orderResponse = await fetch("/api/create-order", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          amount: amount,
-          currency: "INR",
-          receipt: `receipt_${packageId}_${Date.now()}`,
-          notes: {
-            packageId,
-          },
-        }),
-      });
-      const orderData = await orderResponse.json();
-
-      if (!orderData || !orderData.orderId) {
-        throw new Error("Failed to create order");
-      }
-
-      const options: RazorpayOptions = {
-        key: orderData.keyId,
-        amount: orderData.amount,
-        currency: orderData.currency,
-        name: "Search Madarth",
-        description: "SEO Audit Services",
-        order_id: orderData.orderId,
-        handler: async function (response: RazorpayResponse) {
-          try {
-            const verificationResponse = await fetch("/api/verify-payment", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-              }),
-            });
-            const verificationData = await verificationResponse.json();
-
-            if (verificationData.success) {
-              alert(
-                "Payment Successful! Thank you for your purchase. We&apos;ll start working on your SEO audit right away."
-              );
-              window.location.href = `/invoice?payment_id=${response.razorpay_payment_id}`;
-            }
-          } catch (error) {
-            console.error("Payment verification error:", error);
-            alert(
-              "Payment Verification Failed: There was an issue verifying your payment. Please contact support."
-            );
-          }
-        },
-        prefill: {
-          name: "",
-          email: "",
-          contact: "",
-        },
-        theme: {
-          color: "#CADB3F",
-        },
-      };
-
-      const razorpay = new window.Razorpay(options);
-      razorpay.open();
-    } catch (error) {
-      console.error("Payment error:", error);
-      alert(
-        "Payment Failed: There was an issue processing your payment. Please try again later."
-      );
-    } finally {
-      setIsLoading(null);
-    }
+    // For fixed price packages, scroll to contact form
+    document
+      .getElementById("contact")
+      ?.scrollIntoView({ behavior: "smooth" });
+    alert("Please fill out the contact form below to proceed with payment.");
   };
 
   return (
