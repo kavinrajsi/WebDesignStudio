@@ -11,6 +11,7 @@ import {
   Factory,
 } from "lucide-react";
 
+// Define the iconMap with explicit types
 const iconMap = {
   "shopping-cart": ShoppingCart,
   "building": Building,
@@ -22,8 +23,9 @@ const iconMap = {
   "wrench": Wrench,
   "briefcase": Briefcase,
   "factory": Factory,
-};
+} as const; // Add `as const` to infer the types of the keys
 
+// Define the industries with explicit typing for `icon`
 const industries = [
   { icon: "shopping-cart", title: "E-commerce & Retail" },
   { icon: "building", title: "Real Estate & Properties" },
@@ -35,7 +37,7 @@ const industries = [
   { icon: "wrench", title: "Home & Tech Services" },
   { icon: "briefcase", title: "Professional & B2B Services" },
   { icon: "factory", title: "Automotive & Manufacturing" },
-];
+] as const; // Add `as const` to ensure that `icon` is recognized as a key of `iconMap`
 
 export function IndustriesSection() {
   return (

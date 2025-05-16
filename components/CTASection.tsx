@@ -1,5 +1,3 @@
-import { Button } from "@/components/ui/button";
-
 export function CTASection() {
   return (
     <section className="py-16 bg-[#0F3529] text-white">

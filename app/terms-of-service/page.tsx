@@ -1,5 +1,3 @@
-
-
 export default function TermsOfService() {
   return (
     <div className="flex-grow bg-gray-50">
@@ -12,12 +10,12 @@ export default function TermsOfService() {
 
             <h2 className="text-xl font-semibold mt-8 mb-4">1. Acceptance of Terms</h2>
             <p>
-              By accessing or using the Search Madarth® website, services, or any applications provided by Search Madarth®, you agree to be bound by these Terms of Service ("Terms"). If you do not agree to all the terms and conditions of this agreement, you may not access the website or use any services.
+              By accessing or using the Search Madarth&reg; website, services, or any applications provided by Search Madarth&reg;, you agree to be bound by these Terms of Service (&quot;Terms&quot;). If you do not agree to all the terms and conditions of this agreement, you may not access the website or use any services.
             </p>
 
             <h2 className="text-xl font-semibold mt-8 mb-4">2. Description of Services</h2>
             <p>
-              Search Madarth® provides an AI-powered SEO audit service designed to help website owners improve their search engine visibility and performance. Our service includes analysis of various aspects of your website, including but not limited to technical SEO, content quality, backlink profiles, and keyword optimization.
+              Search Madarth&reg; provides an AI-powered SEO audit service designed to help website owners improve their search engine visibility and performance. Our service includes analysis of various aspects of your website, including but not limited to technical SEO, content quality, backlink profiles, and keyword optimization.
             </p>
 
             <h2 className="text-xl font-semibold mt-8 mb-4">3. User Accounts</h2>
@@ -30,7 +28,7 @@ export default function TermsOfService() {
 
             <h2 className="text-xl font-semibold mt-8 mb-4">4. User Content</h2>
             <p>
-              Our Service allows you to provide, upload, link to, or otherwise make available certain information, text, graphics, or other material ("Content"). You are responsible for the Content that you post on or through the Service, including its legality, reliability, and appropriateness.
+              Our Service allows you to provide, upload, link to, or otherwise make available certain information, text, graphics, or other material (&quot;Content&quot;). You are responsible for the Content that you post on or through the Service, including its legality, reliability, and appropriateness.
             </p>
             <p className="mb-4">
               By posting Content on or through the Service, You represent and warrant that: (i) the Content is yours (you own it) and/or you have the right to use it and the right to grant us the rights and license as provided in these Terms, and (ii) that the posting of your Content on or through the Service does not violate the privacy rights, publicity rights, copyrights, contract rights or any other rights of any person or entity.
@@ -54,12 +52,12 @@ export default function TermsOfService() {
 
             <h2 className="text-xl font-semibold mt-8 mb-4">7. Intellectual Property</h2>
             <p>
-              The Service and its original content (excluding Content provided by users), features, and functionality are and will remain the exclusive property of Search Madarth® and its licensors. The Service is protected by copyright, trademark, and other laws. Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of Search Madarth®.
+              The Service and its original content (excluding Content provided by users), features, and functionality are and will remain the exclusive property of Search Madarth&reg; and its licensors. The Service is protected by copyright, trademark, and other laws. Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of Search Madarth&reg;.
             </p>
 
             <h2 className="text-xl font-semibold mt-8 mb-4">8. Limitation of Liability</h2>
             <p>
-              In no event shall Search Madarth®, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from (i) your access to or use of or inability to access or use the Service; (ii) any conduct or content of any third party on the Service; (iii) any content obtained from the Service; and (iv) unauthorized access, use or alteration of your transmissions or content, whether based on warranty, contract, tort (including negligence) or any other legal theory, whether or not we have been informed of the possibility of such damage.
+              In no event shall Search Madarth&reg;, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from (i) your access to or use of or inability to access or use the Service; (ii) any conduct or content of any third party on the Service; (iii) any content obtained from the Service; and (iv) unauthorized access, use or alteration of your transmissions or content, whether based on warranty, contract, tort (including negligence) or any other legal theory, whether or not we have been informed of the possibility of such damage.
             </p>
 
             <h2 className="text-xl font-semibold mt-8 mb-4">9. Termination</h2>
@@ -80,7 +78,7 @@ export default function TermsOfService() {
 
             <h2 className="text-xl font-semibold mt-8 mb-4">11. Changes to Terms</h2>
             <p>
-              We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material, we will provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.
+              We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material, we will provide at least 30 days&apos; notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.
             </p>
             <p className="mb-4">
               By continuing to access or use our Service after any revisions become effective, you agree to be bound by the revised terms. If you do not agree to the new terms, you are no longer authorized to use the Service.
