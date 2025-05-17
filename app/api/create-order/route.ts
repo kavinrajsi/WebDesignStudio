@@ -1,28 +1,35 @@
-import { NextResponse } from "next/server";
-import { createOrder, logger } from "@/lib/razorpay";
+import { NextResponse } from 'next/server';
+import Razorpay from 'razorpay';
+
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID!,
+  key_secret: process.env.RAZORPAY_KEY_SECRET!,
+});
 
 export async function POST(request: Request) {
   try {
-    const data = await request.json();
-    logger.info("Creating order", { data });
+    const body = await request.json();
+    const { amount, currency, receipt } = body;
 
-    const result = await createOrder(data);
-    logger.info("Order created successfully", { orderId: result.orderId });
+    const options = {
+      amount: amount,
+      currency: currency,
+      receipt: receipt,
+      payment_capture: 1,
+    };
 
-    return NextResponse.json(result);
+    const order = await razorpay.orders.create(options);
+
+    return NextResponse.json({
+      id: order.id,
+      amount: order.amount,
+      currency: order.currency,
+    });
   } catch (error) {
-    logger.error("Order creation failed", { error });
-    
-    if (error instanceof RazorpayError) {
-      return NextResponse.json(
-        { error: error.message, code: error.code },
-        { status: 400 }
-      );
-    }
-
+    console.error('Error creating order:', error);
     return NextResponse.json(
-      { error: "Internal server error", code: "INTERNAL_ERROR" },
+      { error: 'Error creating order' },
       { status: 500 }
     );
   }
-}
+} 

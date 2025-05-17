@@ -1,46 +1,40 @@
-import { NextResponse } from "next/server";
-import { verifyPayment, logger } from "@/lib/razorpay";
+import { NextResponse } from 'next/server';
+import crypto from 'crypto';
 
 export async function POST(request: Request) {
   try {
-    const data = await request.json();
-    logger.info("Verifying payment", { data });
+    const body = await request.json();
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+    } = body;
 
-    // Validate payment data
-    const payment = await verifyPayment(
-      data.razorpay_order_id,
-      data.razorpay_payment_id,
-      data.razorpay_signature
-    );
+    // Verify signature
+    const text = `${razorpay_order_id}|${razorpay_payment_id}`;
+    const signature = crypto
+      .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET!)
+      .update(text)
+      .digest('hex');
 
-    logger.info("Payment verified successfully", { paymentId: payment.id });
+    const isAuthentic = signature === razorpay_signature;
 
-    return NextResponse.json({
-      success: true,
-      message: "Payment verified successfully",
-      payment
-    });
-  } catch (error) {
-    logger.error("Payment verification failed", { error });
-    
-    if (error instanceof RazorpayError) {
+    if (isAuthentic) {
+      return NextResponse.json({
+        success: true,
+        message: 'Payment verified successfully',
+      });
+    } else {
       return NextResponse.json(
-        { 
-          success: false,
-          error: error.message,
-          code: error.code 
-        },
+        { success: false, message: 'Invalid signature' },
         { status: 400 }
       );
     }
-
+  } catch (error) {
+    console.error('Error verifying payment:', error);
     return NextResponse.json(
-      { 
-        success: false,
-        error: "Internal server error",
-        code: "INTERNAL_ERROR" 
-      },
+      { success: false, message: 'Error verifying payment' },
       { status: 500 }
     );
   }
-}
+} 
