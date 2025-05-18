@@ -671,7 +671,7 @@ export function PricingSection() {
                 <div className="text-center py-8">
                   <h3 className="text-xl font-bold mb-4">Complete Your Payment</h3>
                   <p className="text-gray-600 mb-6">
-                    Amount to pay: ₹870 (including GST)
+                    Amount to pay: ₹870 + (18% GST)
                   </p>
                   <Button
                     onClick={makePayment}
