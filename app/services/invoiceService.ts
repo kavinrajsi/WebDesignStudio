@@ -1,5 +1,4 @@
 import { jsPDF } from 'jspdf';
-import nodemailer from 'nodemailer';
 
 interface CustomerDetails {
   name: string;
@@ -25,8 +24,9 @@ export class InvoiceService {
     const date = new Date();
     const year = date.getFullYear().toString().slice(-2);
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-    return `ISA-${year}${month}-${random}`;
+    const day = date.getDate().toString().padStart(2, '0');
+    const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+    return `INV-${year}${month}${day}-${random}`;
   }
 
   public static async generatePDF(invoiceData: InvoiceData): Promise<Buffer> {
@@ -142,38 +142,6 @@ export class InvoiceService {
     return Buffer.from(doc.output('arraybuffer'));
   }
 
-  private static async sendEmail(invoiceData: InvoiceData, pdfBuffer: Buffer): Promise<void> {
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT),
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
-
-    const subject = invoiceData.status === 'success' 
-      ? `Your Invoice for SEO Audit - ${invoiceData.invoiceNumber}`
-      : `Payment Failed - SEO Audit Invoice ${invoiceData.invoiceNumber}`;
-
-    const text = invoiceData.status === 'success'
-      ? `Dear ${invoiceData.customer.name},\n\nThank you for your recent request for an SEO audit for your website ${invoiceData.customer.website}.\n\nPlease find attached your invoice (No: ${invoiceData.invoiceNumber}) for this service.\nIf you have any questions, feel free to reach out.\n\nBest regards,\nTeam Madarth`
-      : `Dear ${invoiceData.customer.name},\n\nWe noticed that your payment for the SEO audit service was not successful. Please find attached the invoice (No: ${invoiceData.invoiceNumber}) for your reference.\n\nIf you would like to try the payment again or need any assistance, please don't hesitate to contact us.\n\nBest regards,\nTeam Madarth`;
-
-    await transporter.sendMail({
-      from: '"Madarth" <manoj@madarth.com>',
-      to: invoiceData.customer.email,
-      subject,
-      text,
-      attachments: [
-        {
-          filename: `invoice_${invoiceData.invoiceNumber}.pdf`,
-          content: pdfBuffer,
-        },
-      ],
-    });
-  }
-
   public static async generateAndSendInvoice(
     customer: CustomerDetails,
     paymentId: string,
@@ -199,10 +167,9 @@ export class InvoiceService {
 
     try {
       const pdfBuffer = await this.generatePDF(invoiceData);
-      await this.sendEmail(invoiceData, pdfBuffer);
       return invoiceNumber;
     } catch (error) {
-      console.error('Error generating/sending invoice:', error);
+      console.error('Error generating invoice:', error);
       throw error;
     }
   }
