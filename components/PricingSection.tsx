@@ -130,10 +130,10 @@ export function PricingSection() {
   const [paymentId, setPaymentId] = useState<string | null>(null);
 
   // Rate limiting constants
-  const MAX_SUBMISSIONS_PER_HOUR = 2;
-  const MAX_SUBMISSIONS_PER_DAY = 5;
-  const SUBMISSION_COOLDOWN = 3600000; // 1 hour in milliseconds
-  const DAILY_COOLDOWN = 86400000; // 24 hours in milliseconds
+  // const MAX_SUBMISSIONS_PER_HOUR = 2;
+  // const MAX_SUBMISSIONS_PER_DAY = 5;
+  // const SUBMISSION_COOLDOWN = 3600000; // 1 hour in milliseconds
+  // const DAILY_COOLDOWN = 86400000; // 24 hours in milliseconds
 
   useEffect(() => {
     // Get user agent
@@ -167,27 +167,27 @@ export function PricingSection() {
       .catch(console.error);
 
     // Load submission counts from localStorage
-    const savedHourlyCount = localStorage.getItem('formSubmissionCount');
-    const savedDailyCount = localStorage.getItem('dailySubmissionCount');
-    const savedLastSubmissionTime = localStorage.getItem('lastSubmissionTime');
-    const savedFirstSubmissionTime = localStorage.getItem('firstSubmissionTime');
+    // const savedHourlyCount = localStorage.getItem('formSubmissionCount');
+    // const savedDailyCount = localStorage.getItem('dailySubmissionCount');
+    // const savedLastSubmissionTime = localStorage.getItem('lastSubmissionTime');
+    // const savedFirstSubmissionTime = localStorage.getItem('firstSubmissionTime');
 
-    if (savedHourlyCount) setSubmissionCount(parseInt(savedHourlyCount));
-    if (savedLastSubmissionTime) setLastSubmissionTime(parseInt(savedLastSubmissionTime));
+    // if (savedHourlyCount) setSubmissionCount(parseInt(savedHourlyCount));
+    // if (savedLastSubmissionTime) setLastSubmissionTime(parseInt(savedLastSubmissionTime));
 
-    // Check if we need to reset daily count
-    const now = Date.now();
-    const firstSubmissionTime = savedFirstSubmissionTime ? parseInt(savedFirstSubmissionTime) : now;
-    if (now - firstSubmissionTime > DAILY_COOLDOWN) {
-      localStorage.setItem('dailySubmissionCount', '0');
-      localStorage.setItem('firstSubmissionTime', now.toString());
-    } else if (savedDailyCount) {
-      const dailyCount = parseInt(savedDailyCount);
-      if (dailyCount >= MAX_SUBMISSIONS_PER_DAY) {
-        const remainingHours = Math.ceil((DAILY_COOLDOWN - (now - firstSubmissionTime)) / 3600000);
-        setFormError(`Daily submission limit reached. Please try again in ${remainingHours} hours.`);
-      }
-    }
+    // // Check if we need to reset daily count
+    // const now = Date.now();
+    // const firstSubmissionTime = savedFirstSubmissionTime ? parseInt(savedFirstSubmissionTime) : now;
+    // if (now - firstSubmissionTime > DAILY_COOLDOWN) {
+    //   localStorage.setItem('dailySubmissionCount', '0');
+    //   localStorage.setItem('firstSubmissionTime', now.toString());
+    // } else if (savedDailyCount) {
+    //   const dailyCount = parseInt(savedDailyCount);
+    //   if (dailyCount >= MAX_SUBMISSIONS_PER_DAY) {
+    //     const remainingHours = Math.ceil((DAILY_COOLDOWN - (now - firstSubmissionTime)) / 3600000);
+    //     setFormError(`Daily submission limit reached. Please try again in ${remainingHours} hours.`);
+    //   }
+    // }
   }, []);
 
   const validatePhoneNumber = (phone: string): boolean => {
@@ -227,48 +227,51 @@ export function PricingSection() {
     }
   };
 
-  const checkRateLimit = (): boolean => {
-    // Bypass rate limiting in development mode
-    if (isDevelopment) {
-      return true;
-    }
+  // const checkRateLimit = (): boolean => {
+  //   // Bypass rate limiting in development mode
+  //   if (isDevelopment) {
+  //     return true;
+  //   }
 
-    const now = Date.now();
-    const timeSinceLastSubmission = now - lastSubmissionTime;
-    const savedDailyCount = localStorage.getItem('dailySubmissionCount');
-    const savedFirstSubmissionTime = localStorage.getItem('firstSubmissionTime');
-    const firstSubmissionTime = savedFirstSubmissionTime ? parseInt(savedFirstSubmissionTime) : now;
-    const dailyCount = savedDailyCount ? parseInt(savedDailyCount) : 0;
+  //   const now = Date.now();
+  //   const timeSinceLastSubmission = now - lastSubmissionTime;
+  //   const savedDailyCount = localStorage.getItem('dailySubmissionCount');
+  //   const savedFirstSubmissionTime = localStorage.getItem('firstSubmissionTime');
+  //   const firstSubmissionTime = savedFirstSubmissionTime ? parseInt(savedFirstSubmissionTime) : now;
+  //   const dailyCount = savedDailyCount ? parseInt(savedDailyCount) : 0;
 
-    // Reset hourly count if an hour has passed
-    if (timeSinceLastSubmission > SUBMISSION_COOLDOWN) {
-      setSubmissionCount(0);
-      localStorage.setItem('formSubmissionCount', '0');
-    }
+  //   // Reset hourly count if an hour has passed
+  //   if (timeSinceLastSubmission > SUBMISSION_COOLDOWN) {
+  //     setSubmissionCount(0);
+  //     localStorage.setItem('formSubmissionCount', '0');
+  //   }
 
-    // Reset daily count if 24 hours have passed
-    if (now - firstSubmissionTime > DAILY_COOLDOWN) {
-      localStorage.setItem('dailySubmissionCount', '0');
-      localStorage.setItem('firstSubmissionTime', now.toString());
-      return true;
-    }
+  //   // Reset daily count if 24 hours have passed
+  //   if (now - firstSubmissionTime > DAILY_COOLDOWN) {
+  //     localStorage.setItem('dailySubmissionCount', '0');
+  //     localStorage.setItem('firstSubmissionTime', now.toString());
+  //     return true;
+  //   }
 
-    // Check hourly limit
-    if (submissionCount >= MAX_SUBMISSIONS_PER_HOUR) {
-      const remainingMinutes = Math.ceil((SUBMISSION_COOLDOWN - timeSinceLastSubmission) / 60000);
-      setFormError(`Too many submissions. Please try again in ${remainingMinutes} minutes.`);
-      return false;
-    }
+  //   // Check hourly limit
+  //   if (submissionCount >= MAX_SUBMISSIONS_PER_HOUR) {
+  //     const remainingMinutes = Math.max(
+  //       1,
+  //       Math.ceil((SUBMISSION_COOLDOWN - timeSinceLastSubmission) / 60000)
+  //     );
+  //     setFormError(`Too many submissions. Please try again in ${remainingMinutes} minutes.`);
+  //     return false;
+  //   }
 
-    // Check daily limit
-    if (dailyCount >= MAX_SUBMISSIONS_PER_DAY) {
-      const remainingHours = Math.ceil((DAILY_COOLDOWN - (now - firstSubmissionTime)) / 3600000);
-      setFormError(`Daily submission limit reached. Please try again in ${remainingHours} hours.`);
-      return false;
-    }
+  //   // Check daily limit
+  //   if (dailyCount >= MAX_SUBMISSIONS_PER_DAY) {
+  //     const remainingHours = Math.ceil((DAILY_COOLDOWN - (now - firstSubmissionTime)) / 3600000);
+  //     setFormError(`Daily submission limit reached. Please try again in ${remainingHours} hours.`);
+  //     return false;
+  //   }
 
-    return true;
-  };
+  //   return true;
+  // };
 
   const validateField = (name: string, value: string): string => {
     switch (name) {
@@ -509,11 +512,6 @@ export function PricingSection() {
       return;
     }
 
-    // Check rate limit (will be bypassed in development mode)
-    if (!checkRateLimit()) {
-      return;
-    }
-
     // Check honeypot field
     if (formData.website_url) {
       setShowForm(false);
@@ -550,25 +548,6 @@ export function PricingSection() {
 
       // Store order ID for payment
       setOrderId(data.id);
-
-      // Only update rate limiting if not in development mode
-      if (!isDevelopment) {
-        const now = Date.now();
-        const newHourlyCount = submissionCount + 1;
-        const savedDailyCount = localStorage.getItem('dailySubmissionCount');
-        const dailyCount = savedDailyCount ? parseInt(savedDailyCount) + 1 : 1;
-        
-        setSubmissionCount(newHourlyCount);
-        setLastSubmissionTime(now);
-        
-        localStorage.setItem('formSubmissionCount', newHourlyCount.toString());
-        localStorage.setItem('lastSubmissionTime', now.toString());
-        localStorage.setItem('dailySubmissionCount', dailyCount.toString());
-        
-        if (!localStorage.getItem('firstSubmissionTime')) {
-          localStorage.setItem('firstSubmissionTime', now.toString());
-        }
-      }
 
       // Show payment form
       setShowPaymentForm(true);
