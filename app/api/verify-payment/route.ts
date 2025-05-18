@@ -33,7 +33,7 @@ export async function POST(request: Request) {
 
     // Get customer details from Supabase
     const { data: customerData, error: customerError } = await supabase
-      .from('seo_audit_requests')
+      .from('seoaudit_product')
       .select('name, email, phone, website')
       .eq('id', orderId)
       .single();

@@ -58,8 +58,8 @@ export function Navbar() {
             <Image
               src="/assets/logo.svg"
               alt="Search Madarth®"
-              width={96} // adjust as needed
-              height={24} // adjust as needed
+              width={300} // adjust as needed
+              height={38} // adjust as needed
               priority
               className="h-6"
             />

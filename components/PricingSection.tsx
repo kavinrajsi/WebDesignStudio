@@ -31,7 +31,7 @@ const packages = [
     priceInr: 870,
     alternatePrice: "870 INR + GST",
     description:
-      "Get a comprehensive analysis of your website&apos;s SEO performance.",
+      "Get a comprehensive analysis of your websites SEO performance.",
     isPopular: true,
   },
   {
@@ -350,6 +350,12 @@ export function PricingSection() {
     }
 
     try {
+      const baseAmount = 870; // base price in INR
+      const gstRate = 0.18;
+      const gstAmount = baseAmount * gstRate;
+      const totalAmount = baseAmount + gstAmount;
+      const razorpayAmount = Math.round(totalAmount * 100); // in paise
+
       // Create a new order
       const response = await fetch("/api/create-order", {
         method: "POST",
@@ -357,9 +363,14 @@ export function PricingSection() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          amount: 87000, // Amount in paise (₹870)
+          amount: razorpayAmount, // Amount in paise (₹870 + GST)
           currency: "INR",
-          receipt: `receipt_${Date.now()}`, // Unique receipt ID
+          receipt: `receipt_${Date.now()}`,
+          notes: {
+            base_amount: baseAmount,
+            gst_amount: gstAmount,
+            gst_rate: "18%",
+          },
         }),
       });
 
@@ -403,7 +414,7 @@ export function PricingSection() {
             if (isTestMode) {
               console.log('Updating Supabase with orderId:', orderId);
               const { data, error } = await supabase
-                .from('seo_audit_requests')
+                .from('seoaudit_product')
                 .update({ 
                   payment_status: 'completed',
                   payment_id: response.razorpay_payment_id,
@@ -443,7 +454,7 @@ export function PricingSection() {
             if (verifyData.success) {
               console.log('Updating Supabase with orderId:', orderId);
               const { data, error } = await supabase
-                .from('seo_audit_requests')
+                .from('seoaudit_product')
                 .update({ 
                   payment_status: 'completed',
                   payment_id: response.razorpay_payment_id,
@@ -523,7 +534,7 @@ export function PricingSection() {
     try {
       // Insert into Supabase
       const { data, error } = await supabase
-        .from('seo_audit_requests')
+        .from('seoaudit_product')
         .insert([
           {
             name: formData.name,

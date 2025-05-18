@@ -30,7 +30,7 @@ const razorpay = new Razorpay({
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { amount, currency, receipt } = body;
+    const { amount, currency, receipt, notes } = body;
 
     // Validate request data
     if (!amount || !currency) {
@@ -45,6 +45,7 @@ export async function POST(request: Request) {
       currency: currency,
       receipt: receipt || `receipt_${Date.now()}`,
       payment_capture: 1,
+      notes: notes || {},
     };
 
     const order = await razorpay.orders.create(options);

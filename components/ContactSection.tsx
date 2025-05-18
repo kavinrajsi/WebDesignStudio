@@ -1,9 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Check } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
 export function ContactSection() {
   const [formData, setFormData] = useState({
@@ -12,7 +13,18 @@ export function ContactSection() {
     mobile: "+91 ",
     website: "",
     message: "",
+    // Honeypot fields
+    website_url: "", // Hidden field for bots
   });
+
+  const [userInfo, setUserInfo] = useState({
+    ip: '',
+    userAgent: '',
+    referrer: '',
+    location: '',
+    pageUrl: '',
+  });
+
   const [errors, setErrors] = useState<{
     name?: string;
     email?: string;
@@ -22,6 +34,39 @@ export function ContactSection() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  useEffect(() => {
+    // Get user agent
+    setUserInfo(prev => ({
+      ...prev,
+      userAgent: navigator.userAgent,
+      referrer: document.referrer,
+      pageUrl: window.location.href,
+    }));
+
+    // Get IP and location
+    fetch('https://api.ipify.org?format=json')
+      .then(res => res.json())
+      .then(data => {
+        setUserInfo(prev => ({
+          ...prev,
+          ip: data.ip,
+        }));
+      })
+      .catch(console.error);
+
+    // Get location using IP
+    fetch('https://ipapi.co/json/')
+      .then(res => res.json())
+      .then(data => {
+        const location = `${data.city}, ${data.region}, ${data.country_name}`;
+        setUserInfo(prev => ({
+          ...prev,
+          location,
+        }));
+      })
+      .catch(console.error);
+  }, []);
+
   const validateForm = () => {
     const newErrors: {
       name?: string;
@@ -30,6 +75,12 @@ export function ContactSection() {
       website?: string;
     } = {};
     let isValid = true;
+
+    // Check honeypot field
+    if (formData.website_url) {
+      console.log('Bot detected through honeypot field');
+      return false;
+    }
 
     // Name validation
     if (!formData.name.trim()) {
@@ -119,16 +170,33 @@ export function ContactSection() {
     setIsSubmitting(true);
 
     try {
-      // Simulated API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Insert the form data into Supabase
+      const { error } = await supabase
+        .from('seoaudit_contactsubmission')
+        .insert([
+          {
+            name: formData.name,
+            email: formData.email,
+            mobile: formData.mobile,
+            website: formData.website,
+            message: formData.message,
+            created_at: new Date().toISOString(),
+            // Additional security and tracking fields
+            ip_address: userInfo.ip,
+            user_agent: userInfo.userAgent,
+            referrer_url: userInfo.referrer,
+            page_url: userInfo.pageUrl,
+            location: userInfo.location,
+            is_bot: false, // This will be true if honeypot is triggered
+          }
+        ]);
 
-      alert(
-        "Success! Thank you for your submission. We&apos;ll get back to you soon."
-      );
+      if (error) throw error;
 
       // Show success message instead of form
       setIsSubmitted(true);
-    } catch {
+    } catch (error) {
+      console.error('Error submitting form:', error);
       alert("Something went wrong. Please try again later.");
     } finally {
       setIsSubmitting(false);
@@ -154,16 +222,22 @@ export function ContactSection() {
               <h3 className="text-[28px] font-bold mb-4">Thank You!</h3>
               <p className="text-gray-600 mb-6">
                 Your submission has been received successfully. We&apos;ll analyze
-                your website and get back to you within 48 hours with your SEO
-                audit report.
-              </p>
-              <p className="text-gray-600">
-                A confirmation has been sent to your email address. If you have
-                any questions, please contact us at manoj@madarth.com.
+                your website and get back to you.
               </p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Honeypot field - hidden from real users */}
+              <div className="hidden">
+                <input
+                  type="text"
+                  name="website_url"
+                  value={formData.website_url}
+                  onChange={handleChange}
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-1">
                   <label
