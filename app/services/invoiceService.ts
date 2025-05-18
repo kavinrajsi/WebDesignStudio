@@ -19,6 +19,11 @@ interface InvoiceData {
   date: string;
 }
 
+interface InvoiceResult {
+  invoiceNumber: string;
+  pdfBuffer: Buffer;
+}
+
 export class InvoiceService {
   public static generateInvoiceNumber(): string {
     const date = new Date();
@@ -147,7 +152,7 @@ export class InvoiceService {
     paymentId: string,
     orderId: string,
     status: 'success' | 'error'
-  ): Promise<string> {
+  ): Promise<InvoiceResult> {
     const invoiceNumber = this.generateInvoiceNumber();
     const amount = 870; // Base amount
     const gstAmount = amount * 0.18; // 18% GST
@@ -167,7 +172,10 @@ export class InvoiceService {
 
     try {
       const pdfBuffer = await this.generatePDF(invoiceData);
-      return invoiceNumber;
+      return {
+        invoiceNumber,
+        pdfBuffer
+      };
     } catch (error) {
       console.error('Error generating invoice:', error);
       throw error;

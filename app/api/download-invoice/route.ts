@@ -68,4 +68,49 @@ export async function GET(request: Request) {
       { status: 500 }
     );
   }
+}
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    const { orderId } = body;
+
+    // Get customer details from Supabase
+    const { data: customerData, error: customerError } = await supabase
+      .from('seoaudit_product')
+      .select('name, email, phone, website')
+      .eq('id', orderId)
+      .single();
+
+    if (customerError) {
+      console.error('Error fetching customer data:', customerError);
+      throw new Error('Failed to fetch customer data');
+    }
+
+    // Generate invoice
+    const { pdfBuffer, invoiceNumber } = await InvoiceService.generateAndSendInvoice(
+      customerData,
+      'download',
+      'download',
+      'success'
+    );
+
+    // Return the PDF buffer with appropriate headers
+    return new NextResponse(pdfBuffer, {
+      headers: {
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': `attachment; filename="invoice-${invoiceNumber}.pdf"`,
+      },
+    });
+  } catch (error) {
+    console.error('Error generating invoice:', error);
+    return NextResponse.json(
+      { 
+        success: false, 
+        message: 'Error generating invoice',
+        error: error instanceof Error ? error.message : 'Unknown error'
+      },
+      { status: 500 }
+    );
+  }
 } 

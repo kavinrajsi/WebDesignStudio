@@ -47,8 +47,8 @@ export async function POST(request: Request) {
       // In test mode, always return success
       console.log('Test mode payment verified successfully');
       
-      // Generate and send invoice for test mode
-      await InvoiceService.generateAndSendInvoice(
+      // Generate invoice for test mode
+      const { invoiceNumber } = await InvoiceService.generateAndSendInvoice(
         customerData,
         razorpay_payment_id,
         razorpay_order_id,
@@ -60,7 +60,8 @@ export async function POST(request: Request) {
         message: 'Test payment verified successfully',
         test_mode: true,
         order_id: razorpay_order_id,
-        payment_id: razorpay_payment_id
+        payment_id: razorpay_payment_id,
+        invoice_number: invoiceNumber
       });
     }
 
@@ -75,8 +76,8 @@ export async function POST(request: Request) {
     console.log('Signature verification:', { isAuthentic });
 
     if (isAuthentic) {
-      // Generate and send invoice for successful payment
-      await InvoiceService.generateAndSendInvoice(
+      // Generate invoice for successful payment
+      const { invoiceNumber } = await InvoiceService.generateAndSendInvoice(
         customerData,
         razorpay_payment_id,
         razorpay_order_id,
@@ -87,7 +88,8 @@ export async function POST(request: Request) {
         success: true,
         message: 'Payment verified successfully',
         order_id: razorpay_order_id,
-        payment_id: razorpay_payment_id
+        payment_id: razorpay_payment_id,
+        invoice_number: invoiceNumber
       });
     } else {
       console.error('Invalid signature:', {
@@ -95,8 +97,8 @@ export async function POST(request: Request) {
         calculated: signature
       });
 
-      // Generate and send invoice for failed payment
-      await InvoiceService.generateAndSendInvoice(
+      // Generate invoice for failed payment
+      const { invoiceNumber } = await InvoiceService.generateAndSendInvoice(
         customerData,
         razorpay_payment_id,
         razorpay_order_id,
@@ -104,7 +106,11 @@ export async function POST(request: Request) {
       );
 
       return NextResponse.json(
-        { success: false, message: 'Invalid signature' },
+        { 
+          success: false, 
+          message: 'Invalid signature',
+          invoice_number: invoiceNumber
+        },
         { status: 400 }
       );
     }
