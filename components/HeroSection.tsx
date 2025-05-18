@@ -25,9 +25,9 @@ export function HeroSection() {
               className="bg-gray-800/20 rounded-lg overflow-hidden shadow-xl"
             >
               <picture className="w-full h-full">
-                <source srcSet="/assets/hero-image.webp" type="image/webp" />
+                <source srcSet="/assets/hero-image.png" type="image/webp" />
                 <img
-                  src="/assets/hero-image.jpg"
+                  src="/assets/hero-image.png"
                   alt="SEO Analysis Dashboard"
                   className="w-full h-auto rounded-lg shadow-xl"
                   loading="eager"

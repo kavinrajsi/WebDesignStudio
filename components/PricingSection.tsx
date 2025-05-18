@@ -5,6 +5,8 @@ import { Check } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/lib/supabase";
 
+const isDevelopment = process.env.NODE_ENV === 'development';
+
 const benefits = [
   "Higher Search Engine Rankings",
   "More Leads & Conversions",
@@ -83,6 +85,9 @@ interface RazorpayOptions {
   theme: {
     color: string;
   };
+  modal: {
+    ondismiss: () => void;
+  };
 }
 
 declare global {
@@ -122,6 +127,7 @@ export function PricingSection() {
   });
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [orderId, setOrderId] = useState<string | null>(null);
+  const [paymentId, setPaymentId] = useState<string | null>(null);
 
   // Rate limiting constants
   const MAX_SUBMISSIONS_PER_HOUR = 2;
@@ -221,15 +227,9 @@ export function PricingSection() {
     }
   };
 
-  const isLocalhost = () => {
-    if (typeof window === 'undefined') return false;
-    const hostname = window.location.hostname;
-    return hostname === 'localhost' || hostname === '127.0.0.1';
-  };
-
   const checkRateLimit = (): boolean => {
-    // Skip rate limiting for localhost
-    if (isLocalhost()) {
+    // Bypass rate limiting in development mode
+    if (isDevelopment) {
       return true;
     }
 
@@ -344,34 +344,85 @@ export function PricingSection() {
   const makePayment = async () => {
     const res = await initializeRazorpay();
     if (!res) {
-      alert("Razorpay SDK failed to load");
+      setFormError("Razorpay SDK failed to load");
       return;
     }
 
     try {
+      // Create a new order
       const response = await fetch("/api/create-order", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          amount: 87000,
+          amount: 87000, // Amount in paise (₹870)
           currency: "INR",
-          receipt: orderId,
+          receipt: `receipt_${Date.now()}`, // Unique receipt ID
         }),
       });
 
       const data = await response.json();
 
+      if (!response.ok) {
+        console.error('Order creation failed:', data);
+        throw new Error(data.details || 'Failed to create order');
+      }
+
+      // Verify that we have a valid order ID
+      if (!data.id) {
+        console.error('Invalid order data received:', data);
+        throw new Error('Invalid order ID received');
+      }
+
+      console.log('Order created successfully:', data);
+
+      const isTestMode = process.env.NEXT_PUBLIC_RAZORPAY_TEST_MODE === 'true';
+      const razorpayKey = isTestMode
+        ? process.env.NEXT_PUBLIC_RAZORPAY_TEST_KEY_ID
+        : process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+
+      if (!razorpayKey) {
+        throw new Error('Razorpay key not found');
+      }
+
       const options: RazorpayOptions = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+        key: razorpayKey,
         amount: data.amount,
         currency: data.currency,
-        name: "SearchMadarth®",
-        description: "Get Your SEO Audit",
+        name: "SEO Audit Solutions",
+        description: "SEO Audit Service",
         order_id: data.id,
         handler: async function (response: RazorpayResponse) {
           try {
+            console.log('Payment response received:', response);
+            setPaymentId(response.razorpay_payment_id);
+
+            // In test mode, we don't need to verify the signature
+            if (isTestMode) {
+              console.log('Updating Supabase with orderId:', orderId);
+              const { data, error } = await supabase
+                .from('seo_audit_requests')
+                .update({ 
+                  payment_status: 'completed',
+                  payment_id: response.razorpay_payment_id,
+                  order_id: response.razorpay_order_id,
+                  test_mode: true
+                })
+                .eq('id', orderId);
+
+              console.log('Supabase update response:', { data, error });
+
+              if (error) {
+                console.error('Supabase update error:', error);
+                throw error;
+              }
+
+              setFormSuccess(true);
+              return;
+            }
+
+            // For production mode, verify the payment
             const verifyResponse = await fetch("/api/verify-payment", {
               method: "POST",
               headers: {
@@ -386,30 +437,35 @@ export function PricingSection() {
             });
 
             const verifyData = await verifyResponse.json();
+            console.log('Payment verification response:', verifyData);
 
             if (verifyData.success) {
-              const { error } = await supabase
+              console.log('Updating Supabase with orderId:', orderId);
+              const { data, error } = await supabase
                 .from('seo_audit_requests')
                 .update({ 
                   payment_status: 'completed',
                   payment_id: response.razorpay_payment_id,
-                  order_id: response.razorpay_order_id
+                  order_id: response.razorpay_order_id,
+                  test_mode: false
                 })
                 .eq('id', orderId);
 
-              if (error) throw error;
+              console.log('Supabase update response:', { data, error });
+
+              if (error) {
+                console.error('Supabase update error:', error);
+                throw error;
+              }
 
               setFormSuccess(true);
-              setTimeout(() => {
-                setShowForm(false);
-                setFormSuccess(false);
-              }, 2000);
             } else {
-              throw new Error("Payment verification failed");
+              console.error('Payment verification failed:', verifyData);
+              throw new Error(verifyData.message || "Payment verification failed");
             }
           } catch (error) {
             console.error('Payment verification error:', error);
-            setFormError('Payment verification failed. Please contact support.');
+            setFormError(error instanceof Error ? error.message : 'Payment verification failed. Please contact support.');
           }
         },
         prefill: {
@@ -420,13 +476,18 @@ export function PricingSection() {
         theme: {
           color: "#0F3529",
         },
+        modal: {
+          ondismiss: function() {
+            console.log('Payment modal dismissed');
+          }
+        }
       };
 
       const paymentObject = new window.Razorpay(options);
       paymentObject.open();
     } catch (error) {
       console.error('Payment initialization error:', error);
-      setFormError('Failed to initialize payment. Please try again.');
+      setFormError(error instanceof Error ? error.message : 'Failed to initialize payment. Please try again.');
     }
   };
 
@@ -448,11 +509,11 @@ export function PricingSection() {
       return;
     }
 
-    // Check rate limit (skips for localhost)
+    // Check rate limit (will be bypassed in development mode)
     if (!checkRateLimit()) {
       return;
     }
-    
+
     // Check honeypot field
     if (formData.website_url) {
       setShowForm(false);
@@ -490,8 +551,8 @@ export function PricingSection() {
       // Store order ID for payment
       setOrderId(data.id);
 
-      // Update rate limiting (skips for localhost)
-      if (!isLocalhost()) {
+      // Only update rate limiting if not in development mode
+      if (!isDevelopment) {
         const now = Date.now();
         const newHourlyCount = submissionCount + 1;
         const savedDailyCount = localStorage.getItem('dailySubmissionCount');
@@ -564,7 +625,7 @@ export function PricingSection() {
                   pkg.isPopular
                     ? "bg-[#CADB3F] text-[#0F3529]"
                     : "bg-[#0F3529] text-white"
-                } font-semibold hover:bg-[#0F3529] hover:text-[#CADB3F] hover:border hover:border-[#0F3529] transition-all`}
+                } font-semibold hover:bg-[#0F3529] hover:text-[#CADB3F] hover:border hover:border-[#0F3529] transition-all cursor-pointer`}
                 onClick={() => {
                   if (pkg.id === "seo-audit") {
                     setShowForm(true);
@@ -573,7 +634,7 @@ export function PricingSection() {
                   }
                 }}
               >
-                Contact Us
+                {pkg.id === "seo-audit" ? "Payment" : "Contact Us"}
               </Button>
             </div>
           ))}
@@ -603,9 +664,20 @@ export function PricingSection() {
                     <Check className="h-10 w-10 text-green-600" />
                   </div>
                   <h3 className="text-xl font-bold mb-2">Thank You!</h3>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 mb-4">
                     Your payment has been processed successfully. We&apos;ll get back to you soon.
                   </p>
+                  <div className="space-y-4">
+                    <Button
+                      onClick={() => {
+                        const downloadUrl = `/api/download-invoice?orderId=${orderId}&paymentId=${paymentId}`;
+                        window.open(downloadUrl, '_blank');
+                      }}
+                      className="bg-[#CADB3F] text-[#0F3529] font-semibold hover:bg-[#0F3529] hover:text-[#CADB3F]"
+                    >
+                      Download Invoice
+                    </Button>
+                  </div>
                 </div>
               ) : showPaymentForm ? (
                 <div className="text-center py-8">
@@ -619,6 +691,11 @@ export function PricingSection() {
                   >
                     Proceed to Payment
                   </Button>
+                  {process.env.NEXT_PUBLIC_RAZORPAY_TEST_MODE === 'true' && (
+                    <div className="text-yellow-600 text-sm mt-2">
+                      Test Mode Active - No real payments will be processed
+                    </div>
+                  )}
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4" noValidate>
