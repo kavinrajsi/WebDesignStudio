@@ -5,7 +5,7 @@ import { Check } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/lib/supabase";
 
-const isDevelopment = process.env.NODE_ENV === 'development';
+// const isDevelopment = process.env.NODE_ENV === 'development';
 
 const benefits = [
   "Higher Search Engine Rankings",
@@ -117,8 +117,6 @@ export function PricingSection() {
     website_url: "",
   });
   const [phoneError, setPhoneError] = useState<string | null>(null);
-  const [submissionCount, setSubmissionCount] = useState(0);
-  const [lastSubmissionTime, setLastSubmissionTime] = useState<number>(0);
   const [fieldErrors, setFieldErrors] = useState({
     name: '',
     email: '',

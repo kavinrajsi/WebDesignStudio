@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator"
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -28,7 +27,7 @@ export default function Invoice() {
   const [loading, setLoading] = useState(true);
   const [invoice, setInvoice] = useState<InvoiceData | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [_, setLocation] = useLocation();
+  // const [_, setLocation] = useLocation();
   
   // Function to extract payment ID from URL
   const getPaymentIdFromUrl = () => {
@@ -47,30 +46,14 @@ export default function Invoice() {
       }
       
       try {
-        // In a real application, this would fetch from the server
-        // For demo, we'll create a mock invoice based on the payment ID
-        setTimeout(() => {
-          // Mock data for demonstration
-          const mockInvoice: InvoiceData = {
-            id: `INV-${Math.floor(Math.random() * 1000000)}`,
-            razorpayOrderId: `order_${Math.random().toString(36).substring(2, 15)}`,
-            razorpayPaymentId: paymentId || `pay_${Math.random().toString(36).substring(2, 15)}`,
-            purchaseDate: new Date().toISOString().split('T')[0],
-            amount: 870,
-            tax: 156.6, // 18% GST
-            total: 1026.6,
-            customerName: "John Doe",
-            customerEmail: "john.doe@example.com",
-            customerPhone: "+91 98765 43210",
-            packageName: "SEO Audit",
-            status: "paid"
-          };
-          
-          setInvoice(mockInvoice);
-          setLoading(false);
-        }, 1000); // Simulating network delay
-      } catch (err) {
-        setError("Failed to fetch invoice data");
+        // TODO: Replace with real invoice fetching logic from the server
+        // Example:
+        // const response = await fetch(`/api/invoice?payment_id=${paymentId}`);
+        // const data = await response.json();
+        // setInvoice(data);
+        // setLoading(false);
+      } catch {
+        // setError("Failed to fetch invoice data");
         setLoading(false);
       }
     };
@@ -108,16 +91,16 @@ export default function Invoice() {
               <CardContent>
                 <p>{error}</p>
               </CardContent>
-              <CardFooter>
+              {/* <CardFooter>
                 <Button onClick={() => setLocation("/")} variant="outline">Return to Home</Button>
-              </CardFooter>
+              </CardFooter> */}
             </Card>
           ) : invoice ? (
             <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-8" id="invoice-container">
               {/* Invoice Header */}
               <div className="flex justify-between items-start mb-8">
                 <div>
-                  <img src={logoSvg} alt="Search Madarth®" className="h-6 mb-4" />
+                  <img src={logoSvg.src} alt="Search Madarth®" className="h-6 mb-4" />
                   <p className="text-gray-600">
                     4, Alamelu Manga Puram Rd,<br />
                     Saradapuram, Mylapore,<br />
