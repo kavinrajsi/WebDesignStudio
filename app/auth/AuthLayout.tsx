@@ -8,11 +8,11 @@ interface AuthLayoutProps {
 
 export default function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-[#0f3529]/10 via-white to-[#0f3529]/5">
       <div className="flex min-h-screen">
         {/* Left side - Content */}
         <div className="hidden lg:block relative w-0 flex-1">
-          <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600">
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0f3529] to-[#1a4d3d]">
             <div className="absolute inset-0 bg-opacity-75 flex flex-col justify-center px-12">
               <h2 className="text-4xl font-bold text-white mb-4">
                 Welcome to SEO Audit Solutions
