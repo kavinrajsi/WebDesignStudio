@@ -3,9 +3,12 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { supabase } from "@/lib/supabase";
+import { createClient } from '@supabase/supabase-js';
 
-// const isDevelopment = process.env.NODE_ENV === 'development';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const benefits = [
   "Higher Search Engine Rankings",
@@ -350,12 +353,6 @@ export function PricingSection() {
     }
 
     try {
-      const baseAmount = 870; // base price in INR
-      const gstRate = 0.18;
-      const gstAmount = baseAmount * gstRate;
-      const totalAmount = baseAmount + gstAmount;
-      const razorpayAmount = Math.round(totalAmount * 100); // in paise
-
       // Create a new order
       const response = await fetch("/api/create-order", {
         method: "POST",
@@ -363,14 +360,9 @@ export function PricingSection() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          amount: razorpayAmount, // Amount in paise (₹870 + GST)
+          amount: 102660, // Amount in paise (1026.60)
           currency: "INR",
-          receipt: `receipt_${Date.now()}`,
-          notes: {
-            base_amount: baseAmount,
-            gst_amount: gstAmount,
-            gst_rate: "18%",
-          },
+          receipt: `receipt_${Date.now()}`, // Unique receipt ID
         }),
       });
 
@@ -658,12 +650,13 @@ export function PricingSection() {
                   <div className="space-y-4">
                     <Button
                       onClick={() => {
-                        const downloadUrl = `/api/download-invoice?orderId=${orderId}&paymentId=${paymentId}`;
-                        window.open(downloadUrl, '_blank');
+                        if (orderId && paymentId) {
+                          window.open(`/invoice/${orderId}`, '_blank')
+                        }
                       }}
                       className="bg-[#CADB3F] text-[#0F3529] font-semibold hover:bg-[#0F3529] hover:text-[#CADB3F]"
                     >
-                      Download Invoice
+                      View Invoice
                     </Button>
                   </div>
                 </div>
@@ -671,7 +664,7 @@ export function PricingSection() {
                 <div className="text-center py-8">
                   <h3 className="text-xl font-bold mb-4">Complete Your Payment</h3>
                   <p className="text-gray-600 mb-6">
-                    Amount to pay: ₹870 + (18% GST)
+                    Amount to pay: ₹870 + 18% GST
                   </p>
                   <Button
                     onClick={makePayment}

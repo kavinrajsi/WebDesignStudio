@@ -1,10 +1,12 @@
 'use client'
 
 import { useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import { initHyperDX } from '@/lib/hyperdx'
 import { Geist, Geist_Mono } from "next/font/google";
+import { Navbar } from "@/components/Navbar"
+import { Footer } from "@/components/Footer"
 import "./globals.css";
-import ClientLayout from "./ClientLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,6 +23,9 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const pathname = usePathname()
+  const isDashboard = pathname?.startsWith('/dashboard')
+
   useEffect(() => {
     // Initialize HyperDX only on the client side
     if (typeof window !== 'undefined') {
@@ -31,7 +36,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ClientLayout>{children}</ClientLayout>
+        {!isDashboard && <Navbar />}
+        <div className="flex flex-col min-h-screen">
+          <main>{children}</main>
+        </div>
+        {!isDashboard && <Footer />}
       </body>
     </html>
   )
