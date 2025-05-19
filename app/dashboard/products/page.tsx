@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Button } from '@/components/ui/button'
+import { FileText } from 'lucide-react'
 
 interface Product {
   id: string
@@ -14,6 +16,8 @@ interface Product {
   website: string
   payment_status: string
   order_id: string
+  payment_id: string
+  gst_number?: string
 }
 
 const formatDate = (dateString: string) => {
@@ -53,7 +57,12 @@ export default function ProductsPage() {
         if (productsError) {
           console.error('Error fetching products:', productsError)
         } else {
-          setProducts(productData || [])
+          // Add GST number to each product
+          const productsWithGST = productData?.map(product => ({
+            ...product,
+            gst_number: '33AAFCP8848R1ZI' // Add GST number to each product
+          })) || []
+          setProducts(productsWithGST)
         }
       } catch (error) {
         console.error('Error fetching user data:', error)
@@ -64,6 +73,10 @@ export default function ProductsPage() {
 
     fetchUserData()
   }, [supabase])
+
+  const handleViewInvoice = (orderId: string, paymentId: string, gstNumber: string) => {
+    window.open(`/dashboard/invoice?orderId=${orderId}&paymentId=${paymentId}&gstNumber=${gstNumber}`, '_blank');
+  };
 
   if (loading) {
     return (
@@ -87,6 +100,7 @@ export default function ProductsPage() {
               <TableHead>Website</TableHead>
               <TableHead>Payment Status</TableHead>
               <TableHead>Order ID</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -120,11 +134,24 @@ export default function ProductsPage() {
                 <TableCell className="text-sm text-gray-500">
                   {product.order_id}
                 </TableCell>
+                <TableCell>
+                  {product.payment_status === 'completed' && product.payment_id && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleViewInvoice(product.id, product.payment_id, product.gst_number || '33AAFCP8848R1ZI')}
+                      className="flex items-center gap-2"
+                    >
+                      <FileText className="h-4 w-4" />
+                      Invoice
+                    </Button>
+                  )}
+                </TableCell>
               </TableRow>
             ))}
             {products.length === 0 && (
               <TableRow>
-                <TableCell colSpan={5} className="text-center">No products found</TableCell>
+                <TableCell colSpan={6} className="text-center">No products found</TableCell>
               </TableRow>
             )}
           </TableBody>
