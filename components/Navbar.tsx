@@ -96,13 +96,12 @@ export function Navbar() {
           >
             Process
           </a>
-          <a
-            href={isHomePage ? "#pricing" : "/#pricing"}
+          <button
+            onClick={() => router.push('/auth/signin')}
             className="bg-[#CADB3F] text-[#0F3529] font-semibold border-[1px] border-[--color-border] hover:bg-[#0F3529] hover:text-[#CADB3F] hover:border hover:border-[#CADB3F] transition-all px-4 py-2 rounded-md"
-            onClick={(e) => isHomePage && handleNavigation(e, "#pricing")}
           >
             Get Started
-          </a>
+          </button>
         </div>
 
         {/* Mobile Menu Button */}
@@ -153,9 +152,7 @@ export function Navbar() {
           <Button
             className="bg-[#CADB3F] text-[#0F3529] font-semibold border-[1px] border-[--color-border] hover:bg-[#0F3529] hover:text-[#CADB3F] hover:border hover:border-[#CADB3F] transition-all w-full"
             onClick={() => {
-              if (!isHomePage) {
-                window.location.href = "/#pricing";
-              }
+              router.push('/auth/signin');
               closeMenu();
             }}
           >
