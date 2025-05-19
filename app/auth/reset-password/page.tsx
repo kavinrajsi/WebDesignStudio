@@ -15,6 +15,10 @@ export default function ResetPassword() {
     password: '',
     confirmPassword: ''
   })
+  const [errors, setErrors] = useState({
+    password: '',
+    confirmPassword: ''
+  })
 
   useEffect(() => {
     // Get the access token from the URL hash
@@ -38,21 +42,37 @@ export default function ResetPassword() {
     console.log('Reset password token received')
   }, [router])
 
+  const validateForm = () => {
+    const newErrors = {
+      password: '',
+      confirmPassword: ''
+    }
+    let isValid = true
+
+    if (!formData.password) {
+      newErrors.password = 'Password is required'
+      isValid = false
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters long'
+      isValid = false
+    }
+
+    if (!formData.confirmPassword) {
+      newErrors.confirmPassword = 'Please confirm your password'
+      isValid = false
+    } else if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match'
+      isValid = false
+    }
+
+    setErrors(newErrors)
+    return isValid
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!formData.password || !formData.confirmPassword) {
-      toast.error('Please fill in all fields')
-      return
-    }
-
-    if (formData.password.length < 6) {
-      toast.error('Password must be at least 6 characters long')
-      return
-    }
-
-    if (formData.password !== formData.confirmPassword) {
-      toast.error('Passwords do not match')
+    if (!validateForm()) {
       return
     }
 
@@ -94,11 +114,19 @@ export default function ResetPassword() {
                 type={showPassword ? "text" : "password"}
                 autoComplete="new-password"
                 required
-                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className={`block w-full px-3 py-2 border ${errors.password ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                 placeholder="Enter new password"
                 value={formData.password}
-                onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                onChange={(e) => {
+                  setFormData(prev => ({ ...prev, password: e.target.value }))
+                  if (errors.password) {
+                    setErrors(prev => ({ ...prev, password: '' }))
+                  }
+                }}
               />
+              {errors.password && (
+                <p className="mt-1 text-sm text-red-500">{errors.password}</p>
+              )}
               <button
                 type="button"
                 className="absolute inset-y-0 right-0 pr-3 flex items-center"
@@ -128,11 +156,19 @@ export default function ResetPassword() {
                 type={showConfirmPassword ? "text" : "password"}
                 autoComplete="new-password"
                 required
-                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className={`block w-full px-3 py-2 border ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                 placeholder="Confirm new password"
                 value={formData.confirmPassword}
-                onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                onChange={(e) => {
+                  setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))
+                  if (errors.confirmPassword) {
+                    setErrors(prev => ({ ...prev, confirmPassword: '' }))
+                  }
+                }}
               />
+              {errors.confirmPassword && (
+                <p className="mt-1 text-sm text-red-500">{errors.confirmPassword}</p>
+              )}
               <button
                 type="button"
                 className="absolute inset-y-0 right-0 pr-3 flex items-center"

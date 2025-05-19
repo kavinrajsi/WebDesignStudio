@@ -1,7 +1,7 @@
 export default function TermsOfService() {
   return (
     <div className="flex-grow bg-gray-50">
-      <div className="container mx-auto px-4 md:px-6 py-12">
+      <div className="container mx-auto px-4 py-16 md:py-20">
         <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
           <h1 className="text-3xl font-bold mb-6">Terms of Service</h1>
 

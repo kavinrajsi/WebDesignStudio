@@ -1,136 +1,181 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
-import { toast } from 'sonner'
-import { AuthError } from '@supabase/supabase-js'
+import { useEffect, useState } from 'react'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
-const LoadingState = () => (
-  <div className="flex items-center justify-center h-screen">
-    <div className="text-xl">Loading...</div>
-  </div>
-)
+interface ContactSubmission {
+  id: string
+  created_at: string
+  name: string
+  email: string
+  phone: string
+  message: string
+  status: string
+}
 
-const ErrorState = ({ message }: { message: string }) => (
-  <div className="flex items-center justify-center h-screen">
-    <div className="text-xl text-red-500">{message}</div>
-  </div>
-)
+interface Product {
+  id: string
+  created_at: string
+  name: string
+  description: string
+  price: number
+  status: string
+}
 
 export default function Dashboard() {
-  const router = useRouter()
+  const [contactSubmissions, setContactSubmissions] = useState<ContactSubmission[]>([])
+  const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [userName, setUserName] = useState<string>('')
-
-  const checkAuth = useCallback(async () => {
-    try {
-      setLoading(true)
-      
-      // Check if user is authenticated
-      const { data: { session }, error: authError } = await supabase.auth.getSession()
-      
-      if (authError) throw authError
-      
-      if (!session) {
-        toast.error('Please sign in to access the dashboard')
-        router.push('/auth/signin')
-        return
-      }
-
-      // Get user profile
-      const { data: profile, error: profileError } = await supabase
-        .from('profiles')
-        .select('full_name')
-        .eq('id', session.user.id)
-        .single()
-
-      if (profileError) {
-        console.error('Error fetching profile:', profileError)
-        
-        // If profile doesn't exist, create it
-        if (profileError.code === 'PGRST116') {
-          const { error: createError } = await supabase
-            .from('profiles')
-            .insert({
-              id: session.user.id,
-              email: session.user.email,
-              full_name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || 'User',
-              last_sign_in: new Date().toISOString(),
-              updated_at: new Date().toISOString()
-            })
-
-          if (createError) {
-            console.error('Error creating profile:', createError)
-            setUserName(session.user.email?.split('@')[0] || 'User')
-          } else {
-            setUserName(session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || 'User')
-          }
-        } else {
-          setUserName(session.user.email?.split('@')[0] || 'User')
-        }
-      } else {
-        setUserName(profile?.full_name || session.user.email?.split('@')[0] || 'User')
-      }
-    } catch (err) {
-      console.error('Dashboard error:', err)
-      if (err instanceof AuthError) {
-        setError(err.message)
-        toast.error('Authentication error. Please sign in again.')
-        router.push('/auth/signin')
-      } else {
-        setError('Failed to fetch data')
-        toast.error('Failed to fetch data. Please try again.')
-      }
-    } finally {
-      setLoading(false)
-    }
-  }, [router])
+  const supabase = createClientComponentClient()
 
   useEffect(() => {
-    checkAuth()
-  }, [checkAuth])
+    async function fetchUserData() {
+      try {
+        // Get current user
+        const { data: { user }, error: userError } = await supabase.auth.getUser()
+        
+        if (userError) {
+          console.error('Error fetching user:', userError)
+          return
+        }
 
-  const handleSignOut = async () => {
-    try {
-      setLoading(true)
-      
-      // Sign out from Supabase
-      const { error } = await supabase.auth.signOut()
-      
-      if (error) {
-        console.error('Sign out error:', error)
-        throw new Error(error.message)
+        if (!user?.email) {
+          console.error('No user email found')
+          return
+        }
+
+        // Log user details
+        console.log('User Details:', {
+          id: user.id,
+          email: user.email,
+          created_at: user.created_at,
+          last_sign_in_at: user.last_sign_in_at,
+          user_metadata: user.user_metadata,
+          app_metadata: user.app_metadata
+        })
+
+        // Fetch contact submissions
+        const { data: submissions, error: submissionsError } = await supabase
+          .from('seoaudit_contactsubmission')
+          .select('*')
+          .eq('email', user.email)
+
+        if (submissionsError) {
+          console.error('Error fetching submissions:', submissionsError)
+        } else {
+          console.log('Contact Submissions:', submissions)
+          setContactSubmissions(submissions || [])
+        }
+
+        // Fetch products
+        const { data: productData, error: productsError } = await supabase
+          .from('seoaudit_product')
+          .select('*')
+          .eq('email', user.email)
+
+        if (productsError) {
+          console.error('Error fetching products:', productsError)
+        } else {
+          console.log('Products:', productData)
+          setProducts(productData || [])
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error)
+      } finally {
+        setLoading(false)
       }
-      
-      // Show success message
-      toast.success('Signed out successfully')
-      
-      // Redirect to sign in page
-      router.push('/auth/signin')
-    } catch (err) {
-      console.error('Sign out error:', err instanceof Error ? err.message : 'Unknown error')
-      toast.error('Failed to sign out. Please try again.')
-    } finally {
-      setLoading(false)
     }
+
+    fetchUserData()
+  }, [supabase])
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+      </div>
+    )
   }
 
-  if (loading) return <LoadingState />
-  if (error) return <ErrorState message={error} />
-
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">Welcome, {userName}!</h1>
-        <button
-          onClick={handleSignOut}
-          className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#CADB3F] text-[#0F3529] font-semibold hover:bg-[#0F3529] hover:text-[#CADB3F] hover:border hover:border-[#0F3529] transition-all cursor-pointer"
-        >
-          Sign Out
-        </button>
-      </div>
+    <div className="container mx-auto py-8">
+      <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
+      
+      {/* Contact Submissions Section */}
+      <Card className="mb-8">
+        <CardHeader>
+          <CardTitle>Contact Submissions</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Date</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Phone</TableHead>
+                <TableHead>Message</TableHead>
+                <TableHead>Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {contactSubmissions.map((submission) => (
+                <TableRow key={submission.id}>
+                  <TableCell>{new Date(submission.created_at).toLocaleDateString()}</TableCell>
+                  <TableCell>{submission.name}</TableCell>
+                  <TableCell>{submission.email}</TableCell>
+                  <TableCell>{submission.phone}</TableCell>
+                  <TableCell>{submission.message}</TableCell>
+                  <TableCell>{submission.status}</TableCell>
+                </TableRow>
+              ))}
+              {contactSubmissions.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center">No submissions found</TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+
+      {/* Products Section */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Products</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Date</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Description</TableHead>
+                <TableHead>Price</TableHead>
+                <TableHead>Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {products.map((product) => (
+                <TableRow key={product.id}>
+                  <TableCell>{new Date(product.created_at).toLocaleDateString()}</TableCell>
+                  <TableCell>{product.name}</TableCell>
+                  <TableCell>{product.description}</TableCell>
+                  <TableCell>${product.price}</TableCell>
+                  <TableCell>{product.status}</TableCell>
+                </TableRow>
+              ))}
+              {products.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center">No products found</TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </div>
   )
 }

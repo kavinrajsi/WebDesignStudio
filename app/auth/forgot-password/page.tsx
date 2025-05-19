@@ -62,13 +62,13 @@ export default function ForgotPassword() {
         </div>
 
         <div>
-          <button
+        <button
             type="submit"
             disabled={loading}
-            className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${
+            className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white cursor-pointer ${
               loading 
-                ? 'bg-indigo-400 cursor-not-allowed' 
-                : 'bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                ? 'bg-[#0f3529]/70 cursor-not-allowed' 
+                : 'bg-[#0f3529] hover:bg-[#1a4d3d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0f3529]'
             }`}
           >
             {loading ? (
@@ -88,7 +88,7 @@ export default function ForgotPassword() {
         <div className="text-center">
           <p className="text-sm text-gray-600">
             Remember your password?{' '}
-            <Link href="/auth/signin" className="font-medium text-indigo-600 hover:text-indigo-500">
+            <Link href="/auth/signin" className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
               Sign in
             </Link>
           </p>
