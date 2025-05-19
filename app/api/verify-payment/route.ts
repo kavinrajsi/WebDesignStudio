@@ -32,8 +32,7 @@ export async function POST(request: Request) {
         message: 'Test payment verified successfully',
         test_mode: true,
         order_id: razorpay_order_id,
-        payment_id: razorpay_payment_id,
-        invoice_number: invoiceNumber
+        payment_id: razorpay_payment_id
       });
     }
 
@@ -52,8 +51,7 @@ export async function POST(request: Request) {
         success: true,
         message: 'Payment verified successfully',
         order_id: razorpay_order_id,
-        payment_id: razorpay_payment_id,
-        invoice_number: invoiceNumber
+        payment_id: razorpay_payment_id
       });
     } else {
       console.error('Invalid signature:', {
@@ -62,11 +60,7 @@ export async function POST(request: Request) {
       });
 
       return NextResponse.json(
-        { 
-          success: false, 
-          message: 'Invalid signature',
-          invoice_number: invoiceNumber
-        },
+        { success: false, message: 'Invalid signature' },
         { status: 400 }
       );
     }
