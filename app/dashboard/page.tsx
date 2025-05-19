@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { toast } from 'sonner'
@@ -24,11 +24,7 @@ export default function Dashboard() {
   const [error, setError] = useState<string | null>(null)
   const [userName, setUserName] = useState<string>('')
 
-  useEffect(() => {
-    checkAuth()
-  }, [])
-
-  const checkAuth = async () => {
+  const checkAuth = useCallback(async () => {
     try {
       setLoading(true)
       
@@ -45,7 +41,7 @@ export default function Dashboard() {
 
       // Get user profile
       const { data: profile, error: profileError } = await supabase
-        .from('seoaudit_profile')
+        .from('profiles')
         .select('full_name')
         .eq('id', session.user.id)
         .single()
@@ -56,13 +52,13 @@ export default function Dashboard() {
         // If profile doesn't exist, create it
         if (profileError.code === 'PGRST116') {
           const { error: createError } = await supabase
-            .from('seoaudit_profile')
+            .from('profiles')
             .insert({
               id: session.user.id,
               email: session.user.email,
               full_name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || 'User',
-              last_sign_in: new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }),
-              updated_at: new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })
+              last_sign_in: new Date().toISOString(),
+              updated_at: new Date().toISOString()
             })
 
           if (createError) {
@@ -90,7 +86,11 @@ export default function Dashboard() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [router])
+
+  useEffect(() => {
+    checkAuth()
+  }, [checkAuth])
 
   const handleSignOut = async () => {
     try {
@@ -126,7 +126,7 @@ export default function Dashboard() {
         <h1 className="text-4xl font-bold text-gray-900 mb-4">Welcome, {userName}!</h1>
         <button
           onClick={handleSignOut}
-          className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#CADB3F] text-[#0F3529] font-semibold hover:bg-[#0F3529] hover:text-[#CADB3F] hover:border hover:border-[#0F3529] transition-all cursor-pointer"
         >
           Sign Out
         </button>

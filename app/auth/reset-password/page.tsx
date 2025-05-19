@@ -1,32 +1,48 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { toast } from 'sonner'
-import { AuthError } from '@supabase/supabase-js'
 import AuthLayout from '../AuthLayout'
 
-export default function SignUp() {
+export default function ResetPassword() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [formData, setFormData] = useState({
-    email: '',
     password: '',
-    confirmPassword: '',
-    fullName: ''
+    confirmPassword: ''
   })
+
+  useEffect(() => {
+    // Get the access token from the URL hash
+    const hash = window.location.hash
+    if (!hash) {
+      toast.error('Invalid reset password link')
+      router.push('/auth/signin')
+      return
+    }
+
+    // Extract the access token from the hash
+    const accessToken = hash.split('=')[1]
+    if (!accessToken) {
+      toast.error('Invalid reset password link')
+      router.push('/auth/signin')
+      return
+    }
+
+    // Store the access token in state or context if needed
+    // For now, we'll just verify it exists
+    console.log('Reset password token received')
+  }, [router])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Form submitted with data:', { ...formData, password: '[REDACTED]' })
-    
-    // Basic validation
-    if (!formData.email || !formData.password || !formData.confirmPassword) {
-      toast.error('Please fill in all required fields')
+
+    if (!formData.password || !formData.confirmPassword) {
+      toast.error('Please fill in all fields')
       return
     }
 
@@ -42,98 +58,19 @@ export default function SignUp() {
 
     try {
       setLoading(true)
-      console.log('Attempting to sign up with Supabase...')
 
-      // Verify Supabase client is initialized
-      if (!supabase) {
-        throw new Error('Supabase client is not initialized')
-      }
-
-      // Sign up with Supabase
-      const { data, error } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
-        options: {
-          data: {
-            full_name: formData.fullName
-          },
-          emailRedirectTo: `${window.location.origin}/auth/callback`
-        }
+      // Update the password using Supabase
+      const { error } = await supabase.auth.updateUser({
+        password: formData.password
       })
 
-      console.log('Supabase response:', { 
-        data: data ? { 
-          user: data.user ? {
-            id: data.user.id,
-            email: data.user.email,
-            created_at: data.user.created_at
-          } : null,
-          session: data.session ? 'Session exists' : 'No session'
-        } : null,
-        error: error ? {
-          message: error.message,
-          status: error.status,
-          name: error.name
-        } : null
-      })
+      if (error) throw error
 
-      if (error) {
-        console.error('Signup error:', error)
-        if (error.message.includes('email')) {
-          toast.error('Invalid email address')
-        } else if (error.message.includes('password')) {
-          toast.error('Password does not meet requirements')
-        } else if (error.message.includes('Database error')) {
-          console.error('Database error details:', error)
-          toast.error('Unable to create account. Please try again later.')
-        } else if (error.message.includes('unexpected_failure')) {
-          console.error('Unexpected failure:', error)
-          toast.error('Unable to create account. Please check your internet connection and try again.')
-        } else {
-          toast.error(error.message || 'An error occurred during signup')
-        }
-        return
-      }
-
-      if (!data?.user) {
-        console.error('No user data returned from signup')
-        toast.error('Signup failed. Please try again.')
-        return
-      }
-
-      console.log('Signup successful, user created:', data.user)
-      
-      try {
-        // Store user data in profiles table
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert({
-            id: data.user.id,
-            email: data.user.email,
-            full_name: formData.fullName,
-            last_sign_in: new Date().toISOString(),
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          })
-
-        if (profileError) {
-          console.error('Error creating user profile:', profileError)
-          // Continue with signup even if profile creation fails
-        }
-      } catch (profileErr) {
-        console.error('Error in profile creation:', profileErr)
-        // Continue with signup even if profile creation fails
-      }
-
-      toast.success('Signup successful! Please check your email to confirm your account.')
+      toast.success('Password updated successfully')
       router.push('/auth/signin')
-    } catch (err) {
-      console.error('Signup error:', err)
-      if (err instanceof AuthError) {
-        toast.error(err.message)
-      } else {
-        toast.error('An error occurred during signup. Please try again.')
-      }
+    } catch (error) {
+      console.error('Reset password error:', error)
+      toast.error('Failed to reset password. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -141,45 +78,14 @@ export default function SignUp() {
 
   return (
     <AuthLayout 
-      title="Create your account"
-      subtitle="Join us to get started with your web design journey"
+      title="Set new password"
+      subtitle="Please enter your new password below"
     >
       <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
         <div className="space-y-4">
           <div>
-            <label htmlFor="full-name" className="block text-sm font-medium text-gray-700">
-              Full Name
-            </label>
-            <input
-              id="full-name"
-              name="fullName"
-              type="text"
-              required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              placeholder="Enter your full name"
-              value={formData.fullName}
-              onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
-            />
-          </div>
-          <div>
-            <label htmlFor="email-address" className="block text-sm font-medium text-gray-700">
-              Email address
-            </label>
-            <input
-              id="email-address"
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              placeholder="Enter your email"
-              value={formData.email}
-              onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-            />
-          </div>
-          <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              Password
+              New Password
             </label>
             <div className="mt-1 relative">
               <input
@@ -189,7 +95,7 @@ export default function SignUp() {
                 autoComplete="new-password"
                 required
                 className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Create a password"
+                placeholder="Enter new password"
                 value={formData.password}
                 onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
               />
@@ -213,7 +119,7 @@ export default function SignUp() {
           </div>
           <div>
             <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700">
-              Confirm Password
+              Confirm New Password
             </label>
             <div className="mt-1 relative">
               <input
@@ -223,7 +129,7 @@ export default function SignUp() {
                 autoComplete="new-password"
                 required
                 className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Confirm your password"
+                placeholder="Confirm new password"
                 value={formData.confirmPassword}
                 onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
               />
@@ -263,21 +169,12 @@ export default function SignUp() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                Creating account...
+                Updating password...
               </>
             ) : (
-              'Create account'
+              'Update password'
             )}
           </button>
-        </div>
-
-        <div className="text-center">
-          <p className="text-sm text-gray-600">
-            Already have an account?{' '}
-            <Link href="/auth/signin" className="font-medium text-indigo-600 hover:text-indigo-500">
-              Sign in
-            </Link>
-          </p>
         </div>
       </form>
     </AuthLayout>
