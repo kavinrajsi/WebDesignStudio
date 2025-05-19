@@ -40,6 +40,15 @@ export default function DashboardPage() {
         
         if (!user?.email) return
 
+        // Fetch user profile to check role
+        const { data: profile } = await supabase
+          .from('seoaudit_profile')
+          .select('role')
+          .eq('id', user.id)
+          .single()
+        
+        console.log('Dashboard Overview - User Role:', profile?.role || 'No role found')
+
         // Fetch contact submissions
         const { data: submissions } = await supabase
           .from('seoaudit_contactsubmission')
@@ -84,7 +93,15 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <p className="text-gray-600">View all your product orders and their status</p>
-            <p className="text-sm text-gray-500 mt-2">Total Orders: {products.length}</p>
+            <div className="mt-4 space-y-2">
+              <p className="text-sm text-gray-500">Total Orders: {products.length}</p>
+              <p className="text-sm text-gray-500">
+                Completed Orders: {products.filter(p => p.payment_status === 'completed').length}
+              </p>
+              <p className="text-sm text-gray-500">
+                Pending Orders: {products.filter(p => p.payment_status !== 'completed').length}
+              </p>
+            </div>
           </CardContent>
         </Card>
 
@@ -97,7 +114,25 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <p className="text-gray-600">View all your contact form submissions</p>
-            <p className="text-sm text-gray-500 mt-2">Total Submissions: {contactSubmissions.length}</p>
+            <div className="mt-4 space-y-2">
+              <p className="text-sm text-gray-500">Total Submissions: {contactSubmissions.length}</p>
+              <p className="text-sm text-gray-500">
+                Today&apos;s Submissions: {contactSubmissions.filter(s => {
+                  const today = new Date()
+                  const submissionDate = new Date(s.created_at)
+                  return submissionDate.toDateString() === today.toDateString()
+                }).length}
+              </p>
+              <p className="text-sm text-gray-500">
+                This Week&apos;s Submissions: {contactSubmissions.filter(s => {
+                  const today = new Date()
+                  const submissionDate = new Date(s.created_at)
+                  const diffTime = Math.abs(today.getTime() - submissionDate.getTime())
+                  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+                  return diffDays <= 7
+                }).length}
+              </p>
+            </div>
           </CardContent>
         </Card>
       </div>

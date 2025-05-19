@@ -650,8 +650,9 @@ export function PricingSection() {
                   <div className="space-y-4">
                     <Button
                       onClick={() => {
-                        const viewUrl = `/dashboard/invoice?orderId=${orderId}&paymentId=${paymentId}`;
-                        window.open(viewUrl, '_blank');
+                        if (orderId && paymentId) {
+                          window.open(`/invoice/${orderId}`, '_blank')
+                        }
                       }}
                       className="bg-[#CADB3F] text-[#0F3529] font-semibold hover:bg-[#0F3529] hover:text-[#CADB3F]"
                     >

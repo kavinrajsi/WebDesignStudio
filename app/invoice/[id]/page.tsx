@@ -1,14 +1,8 @@
-"use client";
-
-import { Suspense } from 'react'
-import { useSearchParams } from 'next/navigation'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { useEffect, useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { createClient } from '@supabase/supabase-js'
+import { use } from 'react'
+import { PrintButton } from './PrintButton'
 import { Separator } from '@/components/ui/separator'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 
 interface InvoiceData {
   id: string
@@ -23,104 +17,34 @@ interface InvoiceData {
   gst_number: string
 }
 
-function InvoiceContent() {
-  const searchParams = useSearchParams()
-  const [invoiceData, setInvoiceData] = useState<InvoiceData | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const router = useRouter()
-  const supabase = createClientComponentClient()
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
 
-  useEffect(() => {
-    async function fetchInvoice() {
-      try {
-        const { data: { user } } = await supabase.auth.getUser()
-        
-        if (!user) {
-          router.push('/auth/signin')
-          return
-        }
+async function getInvoiceData(id: string): Promise<InvoiceData> {
+  const { data, error } = await supabase
+    .from('seoaudit_product')
+    .select('*')
+    .eq('id', id)
+    .single()
 
-        const orderId = searchParams.get('orderId')
-        const paymentId = searchParams.get('paymentId')
+  if (error) throw error
 
-        if (!orderId || !paymentId) {
-          setError('Invalid invoice parameters')
-          return
-        }
-
-        const { data: invoice, error: invoiceError } = await supabase
-          .from('seoaudit_product')
-          .select('*')
-          .eq('id', orderId)
-          .single()
-
-        if (invoiceError) throw invoiceError
-
-        setInvoiceData({
-          ...invoice,
-          gst_number: '33AAFCP8848R1ZI'
-        })
-      } catch (err) {
-        console.error('Error fetching invoice:', err)
-        setError('Failed to load invoice data')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchInvoice()
-  }, [supabase, router, searchParams])
-
-  const handlePrint = () => {
-    window.print()
+  return {
+    ...data,
+    gst_number: '33AAFCP8848R1ZI'
   }
+}
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
-      </div>
-    )
-  }
-
-  if (error || !invoiceData) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-red-500">Error</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>{error || 'Invoice not found'}</p>
-        </CardContent>
-      </Card>
-    )
-  }
+export default function PublicInvoicePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params)
+  const invoiceData = use(getInvoiceData(id))
 
   return (
     <div className="min-h-screen bg-gray-50 py-30 md:py-30 px-8">
       <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-8" id="invoice-container">
-        <div className="flex justify-end mb-8 print:hidden">
-          <Button onClick={handlePrint} className="flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-4 w-4"
-            >
-              <polyline points="6 9 6 2 18 2 18 9" />
-              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
-              <rect width="12" height="8" x="6" y="14" />
-            </svg>
-            Print Invoice
-          </Button>
-        </div>
+        <PrintButton />
 
         {/* Invoice Header */}
         <div className="flex justify-between items-start mb-8">
@@ -232,17 +156,5 @@ function InvoiceContent() {
         </div>
       </div>
     </div>
-  )
-}
-
-export default function InvoicePage() {
-  return (
-    <Suspense fallback={
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
-      </div>
-    }>
-      <InvoiceContent />
-    </Suspense>
   )
 } 
