@@ -20,7 +20,6 @@ interface InvoiceData {
   payment_status: string
   order_id: string
   payment_id: string
-  gst_number: string
 }
 
 function InvoiceContent() {
@@ -57,10 +56,7 @@ function InvoiceContent() {
 
         if (invoiceError) throw invoiceError
 
-        setInvoiceData({
-          ...invoice,
-          gst_number: '33AAFCP8848R1ZI'
-        })
+        setInvoiceData(invoice)
       } catch (err) {
         console.error('Error fetching invoice:', err)
         setError('Failed to load invoice data')
@@ -139,7 +135,6 @@ function InvoiceContent() {
               Saradapuram, Mylapore,<br />
               Chennai, Tamil Nadu 600004<br />
               India<br />
-              <span className="font-medium">GST No: {invoiceData.gst_number}</span>
             </p>
           </div>
           <div className="text-right">

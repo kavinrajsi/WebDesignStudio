@@ -187,7 +187,7 @@ export default function SignUp() {
       title="Create your account"
       subtitle="Join us to get started with your web design journey"
     >
-      <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+      <form className="mt-8 space-y-6" onSubmit={handleSubmit} noValidate>
         <div className="space-y-4">
           <div>
             <label
@@ -202,7 +202,6 @@ export default function SignUp() {
                 name="fullName"
                 type="text"
                 autoComplete="name"
-                required
                 className={`block w-full px-3 py-2 border ${errors.fullName ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                 placeholder="Enter your full name"
                 value={formData.fullName}
@@ -231,7 +230,6 @@ export default function SignUp() {
                 name="email"
                 type="email"
                 autoComplete="email"
-                required
                 className={`block w-full px-3 py-2 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                 placeholder="Enter your email"
                 value={formData.email}
@@ -260,7 +258,6 @@ export default function SignUp() {
                 name="password"
                 type={showPassword ? "text" : "password"}
                 autoComplete="new-password"
-                required
                 className={`block w-full px-3 py-2 border ${errors.password ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                 placeholder="Create a password"
                 value={formData.password}
@@ -331,7 +328,6 @@ export default function SignUp() {
                 name="confirmPassword"
                 type={showConfirmPassword ? "text" : "password"}
                 autoComplete="new-password"
-                required
                 className={`block w-full px-3 py-2 border ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                 placeholder="Confirm your password"
                 value={formData.confirmPassword}
