@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
@@ -17,6 +17,7 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
+  LogOut,
 } from 'lucide-react'
 
 export default function DashboardLayout({
@@ -28,6 +29,7 @@ export default function DashboardLayout({
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
   const pathname = usePathname()
+  const router = useRouter()
   const supabase = createClientComponentClient()
 
   useEffect(() => {
@@ -56,6 +58,15 @@ export default function DashboardLayout({
 
     fetchUser()
   }, [supabase])
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut()
+      router.push('/auth/signin')
+    } catch (error) {
+      console.error('Error signing out:', error)
+    }
+  }
 
   const navigation = [
     {
@@ -222,6 +233,17 @@ export default function DashboardLayout({
               <h1 className="text-2xl font-semibold text-gray-900 my-auto">
                 {navigation.find((item) => item.href === pathname)?.name || 'Dashboard'}
               </h1>
+            </div>
+            <div className="flex items-center">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
+                onClick={handleLogout}
+              >
+                <LogOut className="h-4 w-4" />
+                <span>Logout</span>
+              </Button>
             </div>
           </div>
         </div>
