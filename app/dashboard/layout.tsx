@@ -1,28 +1,33 @@
 'use client'
 
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { useEffect, useState } from 'react'
-import { Home, Package, Users, User } from 'lucide-react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
-
-interface Profile {
-  id: string
-  email: string
-  role: string
-  created_at: string
-  updated_at: string
-}
+import Image from 'next/image'
+import { usePathname } from 'next/navigation'
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import {
+  LayoutDashboard,
+  FileText,
+  Send,
+  Users,
+  Settings,
+  Menu,
+  X,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-react'
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const [profile, setProfile] = useState<Profile | null>(null)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
   const pathname = usePathname()
-  const router = useRouter()
   const supabase = createClientComponentClient()
 
   useEffect(() => {
@@ -31,7 +36,7 @@ export default function DashboardLayout({
         const { data: { user } } = await supabase.auth.getUser()
         
         if (!user) {
-          window.location.href = '/login'
+          window.location.href = '/auth/signin'
           return
         }
 
@@ -43,7 +48,6 @@ export default function DashboardLayout({
 
         if (profileError) throw profileError
 
-        setProfile(profile)
         setIsAdmin(profile.role === 'admin')
       } catch (err) {
         console.error('Error fetching user:', err)
@@ -53,77 +57,181 @@ export default function DashboardLayout({
     fetchUser()
   }, [supabase])
 
-  const handleSignOut = async () => {
-    try {
-      const { error } = await supabase.auth.signOut()
-      if (error) throw error
-      router.push('/auth/signin')
-    } catch (error) {
-      console.error('Error signing out:', error)
-    }
-  }
-
   const navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: Home },
-    { name: 'Products', href: '/dashboard/products', icon: Package },
-    { name: 'Contacts', href: '/dashboard/contacts', icon: Users },
-    { name: 'Profile', href: '/dashboard/profile', icon: User },
+    {
+      name: 'Dashboard',
+      href: '/dashboard',
+      icon: LayoutDashboard,
+    },
+    {
+      name: 'Products',
+      href: '/dashboard/products',
+      icon: FileText,
+    },
+    {
+      name: 'Contacts',
+      href: '/dashboard/contacts',
+      icon: Send,
+    },
+    ...(isAdmin ? [{
+      name: 'Customers',
+      href: '/dashboard/customers',
+      icon: Users,
+    }] : []),
+    {
+      name: 'Settings',
+      href: '/dashboard/profile',
+      icon: Settings,
+    },
   ]
-
-  // Filter navigation items based on user role
-  const filteredNavigation = isAdmin 
-    ? navigation 
-    : navigation.filter(item => item.name !== 'Contacts')
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex">
-              <div className="flex-shrink-0 flex items-center">
-                <Link href="/dashboard" className="text-xl font-bold text-gray-900">
-                  Dashboard
-                </Link>
-              </div>
-              <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                {filteredNavigation.map((item) => {
-                  const isActive = pathname === item.href
-                  return (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                        isActive
-                          ? 'border-indigo-500 text-gray-900'
-                          : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-                      }`}
-                    >
-                      <item.icon className="h-4 w-4 mr-2" />
-                      {item.name}
-                    </Link>
-                  )
-                })}
-              </div>
+      {/* Mobile sidebar */}
+      <div
+        className={cn(
+          'fixed inset-0 z-40 lg:hidden',
+          sidebarOpen ? 'block' : 'hidden'
+        )}
+      >
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
+        <div className="fixed inset-y-0 left-0 flex w-64 flex-col bg-white">
+          <div className="flex h-16 items-center justify-between px-4">
+            <div className="flex items-center">
+              <Image
+                src="/assets/madarth-logo.png"
+                alt="Search Madarth®"
+                width={32}
+                height={32}
+                className="h-8 w-auto"
+              />
             </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">
-                {profile?.email}
-              </span>
-              <button
-                onClick={handleSignOut}
-                className="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <X className="h-6 w-6" />
+            </Button>
+          </div>
+          <nav className="flex-1 space-y-1 px-2 py-4">
+            {navigation.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={cn(
+                  'group flex items-center rounded-md px-2 py-2 text-sm font-medium',
+                  pathname === item.href
+                    ? 'bg-gray-100 text-gray-900'
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+                  isCollapsed && 'justify-center'
+                )}
+                title={isCollapsed ? item.name : undefined}
               >
-                Sign Out
-              </button>
+                <item.icon
+                  className={cn(
+                    'h-5 w-5 flex-shrink-0',
+                    pathname === item.href
+                      ? 'text-gray-500'
+                      : 'text-gray-400 group-hover:text-gray-500',
+                    !isCollapsed && 'mr-3'
+                  )}
+                />
+                {!isCollapsed && item.name}
+              </Link>
+            ))}
+          </nav>
+        </div>
+      </div>
+
+      {/* Desktop sidebar */}
+      <div className={cn(
+        'hidden lg:fixed lg:inset-y-0 lg:flex lg:flex-col transition-all duration-300',
+        isCollapsed ? 'lg:w-20' : 'lg:w-64'
+      )}>
+        <div className="flex min-h-0 flex-1 flex-col border-r border-gray-200 bg-white">
+          <div className="flex h-16 items-center justify-between px-4">
+            {!isCollapsed && (
+              <Image
+                src="/assets/madarth-logo.png"
+                alt="Search Madarth®"
+                width={32}
+                height={32}
+                className="h-8 w-auto"
+              />
+            )}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hidden lg:flex"
+              onClick={() => setIsCollapsed(!isCollapsed)}
+            >
+              {isCollapsed ? (
+                <ChevronRight className="h-5 w-5" />
+              ) : (
+                <ChevronLeft className="h-5 w-5" />
+              )}
+            </Button>
+          </div>
+          <nav className="flex-1 space-y-1 px-2 py-4">
+            {navigation.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={cn(
+                  'group flex items-center rounded-md px-2 py-2 text-sm font-medium',
+                  pathname === item.href
+                    ? 'bg-gray-100 text-gray-900'
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+                  isCollapsed && 'justify-center'
+                )}
+                title={isCollapsed ? item.name : undefined}
+              >
+                <item.icon
+                  className={cn(
+                    'h-5 w-5 flex-shrink-0',
+                    pathname === item.href
+                      ? 'text-gray-500'
+                      : 'text-gray-400 group-hover:text-gray-500',
+                    !isCollapsed && 'mr-3'
+                  )}
+                />
+                {!isCollapsed && item.name}
+              </Link>
+            ))}
+          </nav>
+        </div>
+      </div>
+
+      {/* Main content */}
+      <div className={cn(
+        'transition-all duration-300',
+        isCollapsed ? 'lg:pl-20' : 'lg:pl-64'
+      )}>
+        <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 bg-white shadow">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="lg:hidden"
+            onClick={() => setSidebarOpen(true)}
+          >
+            <Menu className="h-6 w-6" />
+          </Button>
+          <div className="flex flex-1 justify-between px-4">
+            <div className="flex flex-1">
+              <h1 className="text-2xl font-semibold text-gray-900 my-auto">
+                {navigation.find((item) => item.href === pathname)?.name || 'Dashboard'}
+              </h1>
             </div>
           </div>
         </div>
-      </nav>
 
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        {children}
-      </main>
+        <main className="py-6">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            {children}
+          </div>
+        </main>
+      </div>
     </div>
   )
 } 

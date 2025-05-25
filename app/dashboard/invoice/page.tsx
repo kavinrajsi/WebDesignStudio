@@ -123,7 +123,7 @@ function InvoiceContent() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-8" id="invoice-container">
+    <div className="bg-white rounded-lg shadow-md p-8" id="invoice-container">
       <div className="flex justify-end mb-8 print:hidden">
         <Button onClick={handlePrint} className="flex items-center gap-2">
           <svg
