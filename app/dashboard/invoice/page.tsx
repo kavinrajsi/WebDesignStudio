@@ -20,6 +20,7 @@ interface InvoiceData {
   payment_status: string
   order_id: string
   payment_id: string
+  gst_number?: string
 }
 
 function InvoiceContent() {
@@ -135,6 +136,7 @@ function InvoiceContent() {
               Saradapuram, Mylapore,<br />
               Chennai, Tamil Nadu 600004<br />
               India<br />
+              GST Number: 33AAFCP8848R1ZI
             </p>
           </div>
           <div className="text-right">
@@ -157,6 +159,9 @@ function InvoiceContent() {
             <p className="text-gray-600">{invoiceData.phone}</p>
             {invoiceData.website && (
               <p className="text-gray-600">{invoiceData.website}</p>
+            )}
+            {invoiceData.gst_number && (
+              <p className="text-gray-600">GST Number: {invoiceData.gst_number}</p>
             )}
           </div>
           <div className="text-right">

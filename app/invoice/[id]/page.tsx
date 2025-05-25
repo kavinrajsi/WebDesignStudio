@@ -59,6 +59,7 @@ export default function PublicInvoicePage({ params }: { params: Promise<{ id: st
               Saradapuram, Mylapore,<br />
               Chennai, Tamil Nadu 600004<br />
               India<br />
+              GST Number: 33AAFCP8848R1ZI
             </p>
           </div>
           <div className="text-right">
@@ -80,7 +81,7 @@ export default function PublicInvoicePage({ params }: { params: Promise<{ id: st
             <p className="text-gray-600">{invoiceData.email}</p>
             <p className="text-gray-600">{invoiceData.phone}</p>
             {invoiceData.website && (
-              <p className="text-gray-600">{invoiceData.website}</p>
+              <span className="text-gray-600">{invoiceData.website}</span>
             )}
           </div>
           <div className="text-right">
