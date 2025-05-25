@@ -118,6 +118,7 @@ export function PricingSection() {
     phone: "",
     website: "",
     website_url: "",
+    gst_number: "",
   });
   const [phoneError, setPhoneError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState({
@@ -407,7 +408,7 @@ export function PricingSection() {
               console.log('Updating Supabase with orderId:', orderId);
               const { data, error } = await supabase
                 .from('seoaudit_product')
-                .update({ 
+                .update({
                   payment_status: 'completed',
                   payment_id: response.razorpay_payment_id,
                   order_id: response.razorpay_order_id,
@@ -533,7 +534,7 @@ export function PricingSection() {
             email: formData.email,
             phone: formData.phone,
             website: formData.website,
-            status: 'pending',
+            gst_number: "",
             payment_status: 'pending',
             created_at: new Date().toISOString(),
             ip_address: userInfo.ip,

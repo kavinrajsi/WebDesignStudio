@@ -14,6 +14,7 @@ function SignInContent() {
   const [errors, setErrors] = useState({
     email: '',
     password: '',
+    general: ''
   })
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
@@ -37,6 +38,7 @@ function SignInContent() {
     const newErrors = {
       email: '',
       password: '',
+      general: ''
     }
     let isValid = true
 
@@ -73,13 +75,30 @@ function SignInContent() {
       })
 
       if (error) {
-        throw error
+        if (error.message.includes('Invalid login credentials')) {
+          setErrors(prev => ({
+            ...prev,
+            general: 'Invalid email or password'
+          }))
+        } else if (error.message.includes('Email not confirmed')) {
+          setErrors(prev => ({
+            ...prev,
+            general: 'Please confirm your email address before signing in'
+          }))
+        } else {
+          setErrors(prev => ({
+            ...prev,
+            general: error.message
+          }))
+        }
+        return
       }
 
       toast.success('Signed in successfully')
       const redirectTo = searchParams.get('redirectedFrom') || '/dashboard'
       router.push(redirectTo)
     } catch (error: unknown) {
+      console.error('Sign in error:', error)
       const errorMessage = error instanceof Error ? error.message : 'Failed to sign in'
       toast.error(errorMessage)
     } finally {
@@ -92,7 +111,7 @@ function SignInContent() {
       title="Welcome back"
       subtitle="Sign in to your account to continue"
     >
-      <form className="mt-8 space-y-6" onSubmit={handleSignIn}>
+      <form className="mt-8 space-y-6" onSubmit={handleSignIn} noValidate>
         <div className="space-y-4">
           <div>
             <label
@@ -107,7 +126,6 @@ function SignInContent() {
                 name="email"
                 type="email"
                 autoComplete="email"
-                required
                 className={`block w-full px-3 py-2 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                 placeholder="Enter your email"
                 value={formData.email}
@@ -137,7 +155,6 @@ function SignInContent() {
                 name="password"
                 type={showPassword ? 'text' : 'password'}
                 autoComplete="current-password"
-                required
                 className={`block w-full px-3 py-2 border ${errors.password ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                 placeholder="Enter your password"
                 value={formData.password}
@@ -180,6 +197,21 @@ function SignInContent() {
             Forgot your password?
           </button>
         </div>
+
+        {errors.general && (
+          <div className="rounded-md bg-red-50 p-4">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm font-medium text-red-800">{errors.general}</p>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div>
         <button

@@ -11,17 +11,24 @@ export default function ForgotPassword() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
+  const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
     if (!email) {
-      toast.error('Please enter your email address')
+      setError('Please enter your email address')
+      return
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError('Please enter a valid email address')
       return
     }
 
     try {
       setLoading(true)
+      setError('')
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/auth/reset-password`
       })
@@ -32,7 +39,7 @@ export default function ForgotPassword() {
       router.push('/auth/signin')
     } catch (error) {
       console.error('Reset password error:', error)
-      toast.error('Failed to send reset instructions. Please try again.')
+      setError('Failed to send reset instructions. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -43,22 +50,31 @@ export default function ForgotPassword() {
       title="Reset your password"
       subtitle="Enter your email address and we'll send you instructions to reset your password"
     >
-      <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+      <form className="mt-8 space-y-6" onSubmit={handleSubmit} noValidate>
         <div>
           <label htmlFor="email-address" className="block text-sm font-medium text-gray-700">
             Email address
           </label>
-          <input
-            id="email-address"
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+          <div className="mt-1">
+            <input
+              id="email-address"
+              name="email"
+              type="email"
+              autoComplete="email"
+              className={`block w-full px-3 py-2 border ${error ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value)
+                if (error) setError('')
+              }}
+            />
+            {error && (
+              <div className="mt-2">
+                <p className="text-sm text-red-500">{error}</p>
+              </div>
+            )}
+          </div>
         </div>
 
         <div>

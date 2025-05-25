@@ -5,13 +5,57 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const isHomePage = pathname === "/";
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Check initial session
+    const checkUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setIsLoggedIn(!!session);
+      
+      if (session) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', session.user.id)
+          .single();
+        
+        console.log('Dashboard Overview - User Role:', profile?.role || 'No role assigned');
+      }
+    };
+    checkUser();
+
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      setIsLoggedIn(!!session);
+      
+      if (session) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', session.user.id)
+          .single();
+        
+        console.log('Dashboard Overview - User Role:', profile?.role || 'No role assigned');
+      }
+    });
+
+    // Cleanup subscription
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   const toggleMenu = () => {
     const nextState = !isMenuOpen;
@@ -97,10 +141,10 @@ export function Navbar() {
             Process
           </a>
           <button
-            onClick={() => router.push('/auth/signin')}
+            onClick={() => router.push(isLoggedIn ? '/dashboard' : '/auth/signin')}
             className="bg-[#CADB3F] text-[#0F3529] font-semibold border-[1px] border-[#CADB3F] hover:bg-[#0F3529] hover:text-[#CADB3F] hover:border hover:border-[#CADB3F] transition-all px-4 py-2 rounded-md cursor-pointer"
           >
-            Get Started
+            {isLoggedIn ? "Dashboard" : "Get Started"}
           </button>
         </div>
 
@@ -152,11 +196,11 @@ export function Navbar() {
           <Button
             className="bg-[#CADB3F] text-[#0F3529] font-semibold border-[1px] border-[--color-border] hover:bg-[#0F3529] hover:text-[#CADB3F] hover:border hover:border-[#CADB3F] transition-all w-full"
             onClick={() => {
-              router.push('/auth/signin');
+              router.push(isLoggedIn ? '/dashboard' : '/auth/signin');
               closeMenu();
             }}
           >
-            Get Started
+            {isLoggedIn ? "Dashboard" : "Get Started"}
           </Button>
         </div>
       </div>

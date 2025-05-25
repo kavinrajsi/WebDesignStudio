@@ -14,7 +14,6 @@ interface InvoiceData {
   payment_status: string
   order_id: string
   payment_id: string
-  gst_number: string
 }
 
 const supabase = createClient(
@@ -31,10 +30,7 @@ async function getInvoiceData(id: string): Promise<InvoiceData> {
 
   if (error) throw error
 
-  return {
-    ...data,
-    gst_number: '33AAFCP8848R1ZI'
-  }
+  return data
 }
 
 export default function PublicInvoicePage({ params }: { params: Promise<{ id: string }> }) {
@@ -63,7 +59,6 @@ export default function PublicInvoicePage({ params }: { params: Promise<{ id: st
               Saradapuram, Mylapore,<br />
               Chennai, Tamil Nadu 600004<br />
               India<br />
-              <span className="font-medium">GST No: {invoiceData.gst_number}</span>
             </p>
           </div>
           <div className="text-right">

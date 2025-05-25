@@ -26,7 +26,6 @@ A modern SEO Audit Solutions website built with cutting-edge technologies to sho
 - **Database**: Supabase
 - **Authentication**: Supabase Auth
 - **API Routes**: Next.js API
-- **Email Service**: Nodemailer
 - **Payment Processing**: Razorpay
 
 ---
