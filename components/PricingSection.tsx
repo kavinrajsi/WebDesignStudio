@@ -30,20 +30,19 @@ const packages = [
   {
     id: "seo-audit",
     title: "SEO Audit",
-    price: "$10",
+    price: "₹870",
     priceInr: 870,
-    alternatePrice: "870 INR + GST",
     description:
       "Get a comprehensive analysis of your websites SEO performance.",
     isPopular: true,
   },
   {
-    id: "website-maintenance",
-    title: "Website Maintenance + SEO",
+    id: "expert-seo",
+    title: "Expert SEO Strategies",
     price: "Custom",
     priceInr: null,
     description:
-      "Already have a website? Get ongoing maintenance and SEO services.",
+      "Just need SEO? Get expert strategies tailored for your specific business needs.",
     isPopular: false,
   },
   {
@@ -56,12 +55,12 @@ const packages = [
     isPopular: false,
   },
   {
-    id: "expert-seo",
-    title: "Expert SEO Strategies",
+    id: "eCommerce-creation",
+    title: "eCommerce Creation + SEO",
     price: "Custom",
     priceInr: null,
     description:
-      "Just need SEO? Get expert strategies tailored for your specific business needs.",
+      "Build and optimize your eCommerce store for higher visibility, faster performance, and better conversions.",
     isPopular: false,
   },
 ];
