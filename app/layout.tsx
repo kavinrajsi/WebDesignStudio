@@ -30,6 +30,13 @@ export default function RootLayout({
     // Initialize HyperDX only on the client side
     if (typeof window !== 'undefined') {
       initHyperDX()
+      
+      // Initialize Microsoft Clarity
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.async = true;
+      script.src = 'https://www.clarity.ms/tag/rtmevkko20';
+      document.head.appendChild(script);
     }
   }, [])
 

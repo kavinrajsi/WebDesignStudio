@@ -593,11 +593,6 @@ export function PricingSection() {
               <h3 className="text-xl font-bold mb-2">{pkg.title}</h3>
               <div className="mb-4">
                 <span className="text-3xl font-bold">{pkg.price}</span>
-                {pkg.alternatePrice && (
-                  <span className="text-sm text-gray-500 block mt-1">
-                    {pkg.alternatePrice}
-                  </span>
-                )}
               </div>
               <p className="text-gray-600 mb-6">{pkg.description}</p>
               <Button
