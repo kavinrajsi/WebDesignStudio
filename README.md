@@ -187,6 +187,88 @@ SEO Audit Solutions is a modern, AI-powered SEO audit and web design platform th
 - Regular updates
 - Client feedback integration
 
+## 📊 Analytics Implementation
+
+The project uses Google Analytics for tracking user interactions and Microsoft Clarity for session recordings. The analytics implementation is modular and type-safe.
+
+### Google Analytics Setup
+
+The project uses Google Analytics 4 (GA4) with the following tracking ID: `G-WR6M7J977M`. Analytics events are tracked using a custom hook `useAnalytics` that provides the following functions:
+
+```typescript
+const { trackButton, trackLink, trackPage, trackCustomEvent } = useAnalytics();
+```
+
+#### Available Tracking Functions
+
+1. **Button Tracking**
+```typescript
+<Button trackingName="sign-up-button" onClick={handleSignUp}>
+  Sign Up
+</Button>
+```
+
+2. **Link Tracking**
+```typescript
+const { trackLink } = useAnalytics();
+<a 
+  href="/about" 
+  onClick={() => trackLink('About Page Link', '/about')}
+>
+  About Us
+</a>
+```
+
+3. **Page View Tracking**
+```typescript
+const { trackPage } = useAnalytics();
+useEffect(() => {
+  trackPage('About Page');
+}, []);
+```
+
+4. **Custom Event Tracking**
+```typescript
+const { trackCustomEvent } = useAnalytics();
+trackCustomEvent({
+  category: 'Form',
+  action: 'Submit',
+  label: 'Contact Form',
+  value: 1
+});
+```
+
+### Microsoft Clarity
+
+Microsoft Clarity is integrated for session recordings and heatmaps with the project ID: `rtmevkko20`. The implementation is handled automatically in the root layout.
+
+### Analytics Data Structure
+
+Events are categorized into the following types:
+- **Button**: Tracks button clicks
+- **Link**: Tracks link clicks
+- **Navigation**: Tracks page views
+- **Form**: Tracks form submissions
+- **Other**: Custom event tracking
+
+Each event includes:
+- Category
+- Action
+- Label (optional)
+- Value (optional)
+- Non-interaction flag (optional)
+
+### Viewing Analytics Data
+
+1. **Google Analytics**
+   - Reports > Engagement > Events
+   - Reports > Realtime > Events
+
+2. **Microsoft Clarity**
+   - Session Recordings
+   - Heatmaps
+   - Click Maps
+
 ---
 
 ## 💻 Getting Started
@@ -203,7 +285,7 @@ pnpm dev
 bun dev
 ```
 
-Then visit http://localhost:3000 to see your app.
+Then visit http://localhost:8080 to see your app.
 
 To begin editing, update app/page.tsx. The page auto-updates as you save changes.
 
