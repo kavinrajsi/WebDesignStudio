@@ -30,8 +30,8 @@ const packages = [
   {
     id: "seo-audit",
     title: "SEO Audit",
-    price: "₹870",
-    priceInr: 870,
+    price: "₹899",
+    priceInr: 899,
     description:
       "Get a comprehensive analysis of your websites SEO performance.",
     isPopular: true,
@@ -360,7 +360,7 @@ export function PricingSection() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          amount: 102660, // Amount in paise (1026.60)
+          amount: 105846, // Amount in paise (1058.46)
           currency: "INR",
           receipt: `receipt_${Date.now()}`, // Unique receipt ID
         }),
@@ -659,7 +659,7 @@ export function PricingSection() {
                 <div className="text-center py-8">
                   <h3 className="text-xl font-bold mb-4">Complete Your Payment</h3>
                   <p className="text-gray-600 mb-6">
-                    Amount to pay: ₹870 + 18% GST
+                    Amount to pay: ₹899 + 18% GST
                   </p>
                   <Button
                     onClick={makePayment}

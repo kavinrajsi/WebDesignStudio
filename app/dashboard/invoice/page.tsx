@@ -225,7 +225,7 @@ function InvoiceContent() {
                   <p className="text-gray-500 text-sm mt-1">Website: {invoiceData.website}</p>
                 )}
               </td>
-              <td className="py-4 px-4 text-right">₹870.00</td>
+              <td className="py-4 px-4 text-right">₹899.00</td>
             </tr>
           </tbody>
         </table>
@@ -236,16 +236,16 @@ function InvoiceContent() {
         <div className="w-64">
           <div className="flex justify-between py-2">
             <span className="font-medium text-gray-700">Subtotal:</span>
-            <span>₹870.00</span>
+            <span>₹899.00</span>
           </div>
           <div className="flex justify-between py-2">
             <span className="font-medium text-gray-700">GST (18%):</span>
-            <span>₹156.60</span>
+            <span>₹161.46</span>
           </div>
           <Separator className="my-2" />
           <div className="flex justify-between py-2 font-bold">
             <span>Total:</span>
-            <span>₹1,026.60</span>
+            <span>₹1058.46</span>
           </div>
         </div>
       </div>
