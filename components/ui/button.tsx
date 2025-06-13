@@ -1,7 +1,6 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
-import { useAnalytics } from '@/hooks/useAnalytics'
 
 import { cn } from "@/lib/utils"
 
@@ -36,38 +35,24 @@ const buttonVariants = cva(
   }
 )
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline'
-  size?: 'sm' | 'md' | 'lg'
-  children: React.ReactNode
-  trackingName?: string
-}
-
-export function Button({ 
-  variant = 'primary', 
-  size = 'md', 
-  children, 
-  trackingName,
-  onClick,
-  ...props 
-}: ButtonProps) {
-  const { trackButton } = useAnalytics()
-
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (trackingName) {
-      trackButton(trackingName)
-    }
-    onClick?.(e)
-  }
+function Button({
+  className,
+  variant,
+  size,
+  asChild = false,
+  ...props
+}: React.ComponentProps<"button"> &
+  VariantProps<typeof buttonVariants> & {
+    asChild?: boolean
+  }) {
+  const Comp = asChild ? Slot : "button"
 
   return (
-    <button
-      onClick={handleClick}
-      className={`btn btn-${variant} btn-${size}`}
+    <Comp
+      data-slot="button"
+      className={cn(buttonVariants({ variant, size, className }))}
       {...props}
-    >
-      {children}
-    </button>
+    />
   )
 }
 

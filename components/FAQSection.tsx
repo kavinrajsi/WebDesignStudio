@@ -8,7 +8,7 @@ import {
 const faqs = [
   {
     question: "What is included in the SEO audit?",
-    answer: "Our AI-powered SEO audit analyzes key areas such as website performance, technical SEO, keyword rankings, backlinks, and security issues. You&apos;ll receive a detailed report with actionable insights to improve your website&apos;s visibility and rankings."
+    answer: "Our AI-powered SEO audit analyzes key areas such as website performance, technical SEO, keyword rankings, backlinks, and security issues. You'll receive a detailed report with actionable insights to improve your website's visibility and rankings."
   },
   {
     question: "How long does it take to receive the audit report?",
@@ -32,7 +32,7 @@ const faqs = [
   },
   {
     question: "How do I get started?",
-    answer: "Simply choose your package, complete the payment, and submit your website details. Our AI-powered system will analyze your site, and you&apos;ll receive your audit report within 48 hours!"
+    answer: "Simply choose your package, complete the payment, and submit your website details. Our AI-powered system will analyze your site, and you'll receive your audit report within 48 hours!"
   },
 ];
 

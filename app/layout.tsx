@@ -51,8 +51,8 @@ export default function RootLayout({
 
       // Initialize gtag
       window.dataLayer = window.dataLayer || [];
-      function gtag(...args: any[]) {
-        window.dataLayer.push(args);
+      function gtag(command: string, ...args: unknown[]) {
+        window.dataLayer.push([command, ...args]);
       }
       gtag('js', new Date());
       gtag('config', 'G-WR6M7J977M');
